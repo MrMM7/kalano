@@ -3,10 +3,11 @@ name: spec-planner
 description: >-
   Use this skill when the user asks to plan, spec out, or scaffold the next
   feature or phase of the project. It reads the roadmap to find the next
-  uncompleted step, asks the user clarifying questions via ask_question, and
-  generates a dated specs folder containing spec.md, plan.md, and tasks.md.
-  Activate when the user says things like "plan the next step", "create specs",
-  "spec out the next phase", "what's next on the roadmap", or "/spec".
+  uncompleted step, asks the user clarifying questions via ask_question,
+  creates a new branch called verb/feature-name, and only then generates a
+  dated specs folder containing spec.md, plan.md, and tasks.md. Activate when
+  the user says things like "plan the next step", "create specs", "spec out the
+  next phase", "what's next on the roadmap", or "/spec".
 ---
 
 # Spec Planner Skill
@@ -62,19 +63,41 @@ preferences.
 After receiving answers, if any responses raise new ambiguities, ask follow-up
 questions. Iterate until you have enough clarity to write an unambiguous spec.
 
-### Step 4 — Generate the Specs Folder
+### Step 4 — Create the Feature Branch
+
+Before creating any spec files or folders, create and switch to a dedicated git branch for the feature:
+
+1. **Determine the branch name**: follow the pattern `verb/feature-name`.
+   - **`verb`**: The Conventional Commits action type representing the work:
+     - `feat` — for new features or capabilities (most common, e.g., `feat/user-registration-endpoint`, `feat/cart-frontend-page`)
+     - `fix` — for bug fixes (e.g., `fix/cookie-auth-cors`)
+     - `refactor` — for code restructuring without behavior changes
+     - `chore` — for maintenance, dependencies, or scaffolding
+   - **`feature-name`**: A concise, descriptive `kebab-case` name derived from the roadmap step (matching the folder name suffix).
+   - Examples: `feat/user-registration-endpoint`, `feat/cart-frontend-page`, `feat/merchant-dashboard`.
+2. **Create and check out the branch**:
+   Run the git command using `run_command`:
+   ```bash
+   git checkout -b <verb>/<feature-name>
+   ```
+   (or `git switch -c <verb>/<feature-name>`)
+3. **Confirm the switch**: Verify that git has switched to the new branch before proceeding.
+
+> **CRITICAL**: You MUST create and switch to the new branch BEFORE writing any spec files. Do NOT start writing the specs until the branch is active. All specs and subsequent implementation code must live on this branch.
+
+### Step 5 — Generate the Specs Folder
+
+Only after the branch is created and checked out, generate the specs folder:
 
 Create the folder: `specs/YYYY-MM-DD-feature-name/`
 
 - Use today's date in `YYYY-MM-DD` format.
-- Use a short, descriptive `kebab-case` feature name derived from the roadmap
-  step (e.g., `user-registration-endpoint`, `cart-frontend-page`,
-  `merchant-dashboard`).
+- Use the matching `feature-name` from the branch name (e.g., `user-registration-endpoint`, `cart-frontend-page`, `merchant-dashboard`).
 
 Generate three files inside this folder, using the templates in the
 [resources/](./resources/) directory:
 
-#### 4a — `spec.md` (WHAT we are building)
+#### 5a — `spec.md` (WHAT we are building)
 
 Read the template at [resources/spec-template.md](./resources/spec-template.md)
 and fill it in. This file defines:
@@ -87,7 +110,7 @@ and fill it in. This file defines:
 - API contract details (endpoints, request/response shapes, if applicable)
 - What is explicitly OUT of scope
 
-#### 4b — `plan.md` (HOW we build it)
+#### 5b — `plan.md` (HOW we build it)
 
 Read the template at [resources/plan-template.md](./resources/plan-template.md)
 and fill it in. This file defines:
@@ -98,7 +121,7 @@ and fill it in. This file defines:
 - Testing strategy (what tests to write, what to mock)
 - Constitution compliance notes (how this plan adheres to the constitution)
 
-#### 4c — `tasks.md` (Execution steps)
+#### 5c — `tasks.md` (Execution steps)
 
 Read the template at
 [resources/tasks-template.md](./resources/tasks-template.md) and fill it in.
@@ -118,9 +141,10 @@ This file defines:
 - Tasks that modify the same file → `[SEQUENTIAL]`
 - Frontend tasks that need API responses → `[SEQUENTIAL]` (after backend)
 
-### Step 5 — Present and Confirm
+### Step 6 — Present and Confirm
 
 After generating all three files, present a brief summary to the user:
+- Branch created and active (`verb/feature-name`)
 - What phase/step was spec'd
 - Key decisions captured
 - Number of tasks and which are parallelizable
@@ -131,6 +155,9 @@ After generating all three files, present a brief summary to the user:
 - **Constitution is law.** Every line of spec, plan, and tasks must comply with
   `.specify/memory/constitution.md`. If you find a conflict between the roadmap
   and the constitution, the constitution wins.
+- **Always branch first.** NEVER start writing specs on `main`. Always create and
+  switch to a new branch called `verb/feature-name` first, and only then start
+  writing the specs.
 - **Never assume — ask.** If something is ambiguous, use `ask_question`.
 - **Be specific.** File paths, function names, endpoint URLs, Pydantic model
   names — include them all. Vague specs lead to bugs.

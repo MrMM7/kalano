@@ -1,6 +1,7 @@
 # Spec: [Feature Name]
 
 > **Roadmap Reference**: Phase X, Step X.Y — [Step Title]
+> **Branch**: `verb/feature-name`
 > **Date**: YYYY-MM-DD
 > **Status**: Draft
 

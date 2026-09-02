@@ -1,6 +1,7 @@
 # Plan: [Feature Name]
 
 > **Spec Reference**: `specs/YYYY-MM-DD-feature-name/spec.md`
+> **Branch**: `verb/feature-name`
 > **Date**: YYYY-MM-DD
 > **Status**: Draft
 

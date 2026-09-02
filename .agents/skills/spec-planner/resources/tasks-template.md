@@ -2,6 +2,7 @@
 
 > **Spec**: `specs/YYYY-MM-DD-feature-name/spec.md`
 > **Plan**: `specs/YYYY-MM-DD-feature-name/plan.md`
+> **Branch**: `verb/feature-name`
 > **Date**: YYYY-MM-DD
 > **Status**: Draft
 
