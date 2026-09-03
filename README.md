@@ -36,7 +36,7 @@ Each phase is planned into numbered specifications (`spec.md`, `plan.md`, `tasks
 
 ### Human Review Gate
 
-Every phase and core backend milestone undergoes thorough manual review by the project author/maintainer before final acceptance. Frontend work is treated as a lightweight learning wrapper, but all backend logic, database operations, security policies, and API contracts are rigorously reviewed to ensure deep understanding and high code quality.
+Every single line of backend code is thoroughly and manually reviewed by me before final acceptance. While frontend code is treated as a lightweight learning wrapper, all backend logic, database operations, security policies, data models, and API contracts undergo line-by-line review to guarantee deep comprehension, architectural integrity, and high craftsmanship.
 
 ## Agent Skills
 
