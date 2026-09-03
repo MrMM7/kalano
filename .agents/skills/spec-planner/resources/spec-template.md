@@ -5,6 +5,11 @@
 > **Spec**: NNN of MMM in phase
 > **Date**: YYYY-MM-DD
 > **Status**: Draft
+>
+> **CRITICAL CONTENT RULE**: DO NOT write implementation code or logic blocks in this document.
+> Everything must be written in **pure text** (natural language, tables, bullet points). Only mock code
+> shapes (e.g. JSON request/response bodies) are allowed, but **mock logic is strictly prohibited**
+> (no function bodies, control flow, loops, or algorithms). Custom enums MUST be explained in pure text.
 
 ---
 

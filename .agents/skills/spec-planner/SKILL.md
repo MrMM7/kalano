@@ -21,6 +21,15 @@ its own numbered spec folder.
 > **CRITICAL**: Before generating ANY output, you MUST read and fully internalize
 > the constitution at `.specify/memory/constitution.md`. Every decision in the
 > spec, plan, and tasks MUST comply with it. This is non-negotiable.
+>
+> **CRITICAL — NO IMPLEMENTATION CODE**: Writing implementation code inside `spec.md`,
+> `plan.md`, or `tasks.md` is **strictly disallowed**. Everything must be written in
+> **pure text** (natural language prose, bullet points, tables, checklists). Only mock code
+> shapes (such as JSON request/response bodies or minimal interface field signatures) are
+> allowed, but **mock logic is strictly prohibited** (no function bodies, control flow,
+> loops, or business logic). In cases like explaining a custom enum, you **MUST** explain
+> it in pure text (e.g., "The `user_role` accepts 'buyer' or 'merchant'") rather than
+> writing code definitions (`class UserRole(Enum): ...`).
 
 ## Workflow
 
@@ -127,7 +136,13 @@ specs/006-auth-context-and-middleware/
 ```
 
 For each spec folder, generate three files using the templates in the
-[resources/](./resources/) directory:
+[resources/](./resources/) directory.
+
+> **CRITICAL CONTENT RULES FOR ALL SPEC FILES (`spec.md`, `plan.md`, `tasks.md`)**:
+> - **Writing code is strictly disallowed**: Do NOT write implementation code inside `spec.md`, `plan.md`, or `tasks.md`.
+> - **Everything must be written in pure text**: All descriptions, specifications, requirements, and steps must be conveyed in natural language prose, bullet points, checklists, and tables.
+> - **Only mock code shapes are allowed; mock logic is strictly prohibited**: You may include minimal mock data shapes (such as JSON request/response payloads or minimal interface field signatures), but **mock logic is strictly prohibited** (no function bodies, control flow, algorithms, conditionals, loops, or component implementations).
+> - **Custom enums must be explained in pure text**: In cases like explaining a custom enum or constrained values, you **MUST** explain it in pure text (e.g., "The `delivered_types` enum accepts: `pending`, `confirmed`, `shipped`, `delivered`, `cancelled`, or `returned`") and never write enum code definitions.
 
 #### 5a — `spec.md` (WHAT we are building)
 
@@ -246,3 +261,8 @@ to the user:
   in the tasks. Independent work should be marked for parallel execution.
 - **Cross-spec dependencies.** Clearly document which specs depend on which.
   Later specs may reference files/modules created by earlier specs.
+- **Strictly no code or mock logic.** Writing code inside `spec.md`, `plan.md`, or
+  `tasks.md` is strictly prohibited. Everything must be written in pure text. Only
+  mock code shapes (e.g. JSON schemas or minimal type/interface signatures) are allowed,
+  but mock logic (function bodies, control flow, loops, algorithms) is forbidden. Custom
+  enums MUST be explained in pure text.

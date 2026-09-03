@@ -5,6 +5,12 @@
 > **Spec**: NNN of MMM in phase
 > **Date**: YYYY-MM-DD
 > **Status**: Draft
+>
+> **CRITICAL CONTENT RULE**: DO NOT write implementation code or logic blocks in this document.
+> Everything must be written in **pure text** (natural language, tables, bullet points). Only mock code
+> shapes (e.g. JSON schemas or minimal type/interface signatures) are allowed, but **mock logic is
+> strictly prohibited** (no function bodies, control flow, loops, or algorithms). Custom enums
+> MUST be explained in pure text.
 
 ---
 
@@ -64,8 +70,12 @@ graph TD
 
 ## 6. Detailed Implementation Notes
 
-_File-by-file breakdown of what needs to happen. Be specific about function
-names, model shapes, and logic._
+> **REMINDER**: DO NOT write implementation code or logic blocks here! Everything must
+> be written in pure text. Mock code shapes/signatures only; mock logic is strictly
+> prohibited. Custom enums must be explained in pure text.
+
+_File-by-file breakdown of what needs to happen. Describe function names, model
+fields, and algorithmic steps in pure text._
 
 ### 6.1 — Backend: Models (`backend/app/models/example.py`)
 
