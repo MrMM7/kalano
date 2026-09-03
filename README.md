@@ -42,20 +42,20 @@ Every single line of backend code is thoroughly and manually reviewed by me befo
 
 This project uses three custom AI agent skills (located in `.agents/skills/`) that automate the plan → build → ship lifecycle:
 
-### `/spec` — Spec Planner
+### `/spec-planner`
 
 Plans the next phase of development. It reads the project roadmap, asks you clarifying questions, creates a feature branch, and generates numbered spec folders (e.g. `specs/001-feature-name/`) each containing `spec.md`, `plan.md`, and `tasks.md`.
 
-**Trigger by saying:** "plan the next step", "create specs", "spec out the next phase", or `/spec`
-
-### `/build` — Spec Executor
+### `/spec-executor`
 
 Implements the next unfinished spec. It reads the spec/plan/tasks files, then executes every task in order — running sequential batches one-by-one and parallel batches via concurrent subagents. Stops after completing one spec unless told to "run all".
 
-**Trigger by saying:** "implement this spec", "start building", "execute the spec", `/build`, or `/exec`
-
-### `/finish` — Spec Finisher
+### `/spec-finisher`
 
 Finalizes a phase after implementation. It runs all frontend and backend tests, **immediately halts if anything fails**, then cleans up spec folders, commits with a Conventional Commit message, and merges the feature branch into `main`.
 
-**Trigger by saying:** "finish the spec", "run tests and merge", "wrap up this feature", `/finish`, or `/merge`
+### AI of choice for these skills
+I highly recommend using the most powerful AI model available (e.g. Opus 5 High, Gemini 3.8 High) for `/spec-planner` and `/spec-finisher`.
+
+For `/spec-executor`, use a faster, less powerful model (e.g. Sonnet 5 Medium, Gemini 3.8 Low). The specs are the most important part of implementation and are already produced by a powerful model, so a less capable model is generally sufficient to translate them into code.
+
