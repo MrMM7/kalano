@@ -10,6 +10,7 @@ from app.models.auth import (
     ErrorDetail,
     ErrorResponse,
     LoginResponse,
+    LogoutResponse,
     TokenClaims,
     UserLoginRequest,
     UserRegisterRequest,
@@ -165,3 +166,21 @@ async def get_me(
     Excludes sensitive fields like password_hash.
     """
     return current_user.to_response()
+
+
+@router.post(
+    "/auth/logout",
+    response_model=LogoutResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Log out current user",
+    description="Clears the httpOnly authentication cookie, effectively logging the user out.",
+    tags=["Auth"],
+)
+async def logout(response: Response) -> LogoutResponse:
+    response.delete_cookie(
+        key="kalano_token",
+        httponly=True,
+        samesite="lax",
+        path="/",
+    )
+    return LogoutResponse(message="Logged out successfully")

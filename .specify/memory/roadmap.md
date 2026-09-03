@@ -26,9 +26,9 @@
 
 ---
 
-## [ ] Phase 2: Authentication
+## [x] Phase 2: Authentication
 
-### [ ] Step 2.1 — User registration endpoint
+### [x] Step 2.1 — User registration endpoint
 
 - Create `POST /api/v1/auth/register`.
 - Accept: `email`, `password`, `display_name`, `user_role` (buyer or merchant).
@@ -36,7 +36,7 @@
 - Return the created user (without password_hash).
 - Write pytest tests for: success, duplicate email, missing fields.
 
-### [ ] Step 2.2 — User login endpoint
+### [x] Step 2.2 — User login endpoint
 
 - Create `POST /api/v1/auth/login`.
 - Accept: `email`, `password`.
@@ -45,14 +45,14 @@
 - Return the JWT in the response body (frontend will set it as a cookie).
 - Write pytest tests for: success, wrong password, non-existent user.
 
-### [ ] Step 2.3 — Auth dependency & current user
+### [x] Step 2.3 — Auth dependency & current user
 
 - Create a FastAPI dependency `get_current_user` that extracts and validates the JWT from the
   request (cookie or Authorization header).
 - Create a `GET /api/v1/auth/me` endpoint that returns the current user's profile.
 - Write tests for: valid token, expired token, missing token.
 
-### [ ] Step 2.4 — Frontend auth pages (Sign Up)
+### [x] Step 2.4 — Frontend auth pages (Sign Up)
 
 - Build the `/signup` page with a form: email, password, display name, role selector
   (Buyer/Merchant).
@@ -61,7 +61,7 @@
 - On success, redirect to `/login`.
 - Display validation errors inline.
 
-### [ ] Step 2.5 — Frontend auth pages (Log In)
+### [x] Step 2.5 — Frontend auth pages (Log In)
 
 - Build the `/login` page with a form: email, password.
 - On submit, call `POST /api/v1/auth/login`.
@@ -69,7 +69,7 @@
 - Redirect to `/` on success.
 - Display error messages for invalid credentials.
 
-### [ ] Step 2.6 — Auth context & middleware
+### [x] Step 2.6 — Auth context & middleware
 
 - Create a React Context (`AuthContext`) that holds the current user state.
 - On app mount, call `GET /api/v1/auth/me` to hydrate the user.

@@ -139,3 +139,11 @@ class LoginResponse(BaseModel):
         examples=["bearer"],
     )
     user: UserResponse = Field(description="Public profile of the authenticated user")
+
+
+class LogoutResponse(BaseModel):
+    message: str = Field(
+        default="Logged out successfully",
+        description="Confirmation message that the user was logged out",
+        examples=["Logged out successfully"],
+    )
