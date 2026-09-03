@@ -80,3 +80,62 @@ class UserResponse(BaseModel):
         description="User address, null upon registration",
         examples=[None],
     )
+
+
+class AuthenticatedUser(BaseModel):
+    """Internal domain model for a successfully authenticated user entity."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: UUID = Field(description="Unique user identifier")
+    created_at: datetime = Field(description="Account creation timestamp")
+    email: str = Field(description="User email address")
+    display_name: str = Field(description="User public display name")
+    user_role: str = Field(description="User role ('buyer', 'merchant', or 'logistics')")
+    address: str | None = Field(default=None, description="User address")
+    password_hash: str = Field(description="Stored Argon2 password hash")
+
+    def to_response(self) -> UserResponse:
+        """Convert into public UserResponse model, excluding sensitive credentials."""
+        return UserResponse.model_validate(self)
+
+
+class TokenClaims(BaseModel):
+    """Payload claims embedded and signed within a JWT access token."""
+
+    user_id: UUID | str = Field(description="Subject identifier (user UUID)")
+    user_role: str = Field(description="Role identifier ('buyer', 'merchant', or 'logistics')")
+    exp: int | None = Field(default=None, description="Expiration timestamp (UNIX epoch seconds)")
+
+
+class UserLoginRequest(BaseModel):
+    email: str = Field(
+        pattern=r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
+        description="Registered user email address",
+        examples=["buyer@example.com"],
+    )
+    password: str = Field(
+        min_length=1,
+        description="Plaintext password",
+        examples=["securepassword123"],
+    )
+
+    @field_validator("email", mode="before")
+    @classmethod
+    def normalize_email(cls, v: str) -> str:
+        if isinstance(v, str):
+            return v.strip().lower()
+        return v
+
+
+class LoginResponse(BaseModel):
+    access_token: str = Field(
+        description="JWT access token for authentication",
+        examples=["eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."],
+    )
+    token_type: str = Field(
+        default="bearer",
+        description="Authentication scheme identifier",
+        examples=["bearer"],
+    )
+    user: UserResponse = Field(description="Public profile of the authenticated user")
