@@ -12,7 +12,7 @@
 | # | Spec Folder | Step | Status |
 |---|-------------|------|--------|
 | 001 | `specs/001-user-registration-endpoint/` | Step 2.1 — User registration endpoint | ✅ Complete |
-| 002 | `specs/002-user-login-endpoint/` | Step 2.2 — User login endpoint | ⬜ Pending |
+| 002 | `specs/002-user-login-endpoint/` | Step 2.2 — User login endpoint | ✅ Complete |
 | 003 | `specs/003-auth-dependency-and-current-user/` | Step 2.3 — Auth dependency & current user | ⬜ Pending |
 | 004 | `specs/004-frontend-signup-page/` | Step 2.4 — Frontend auth pages (Sign Up) | ⬜ Pending |
 | 005 | `specs/005-frontend-login-page/` | Step 2.5 — Frontend auth pages (Log In) | ⬜ Pending |
