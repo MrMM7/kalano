@@ -1,8 +1,9 @@
 # Tasks: [Feature Name]
 
-> **Spec**: `specs/YYYY-MM-DD-feature-name/spec.md`
-> **Plan**: `specs/YYYY-MM-DD-feature-name/plan.md`
-> **Branch**: `verb/feature-name`
+> **Spec**: `specs/NNN-feature-name/spec.md`
+> **Plan**: `specs/NNN-feature-name/plan.md`
+> **Branch**: `verb/phase-name`
+> **Spec**: NNN of MMM in phase
 > **Date**: YYYY-MM-DD
 > **Status**: Draft
 
@@ -14,6 +15,16 @@
 - `[PARALLEL]` — Can be executed simultaneously with other `[PARALLEL]` tasks in
   the same batch.
 - `[SUBAGENT]` — Should be delegated to a subagent for parallel execution.
+
+---
+
+## Prior Spec Dependencies
+
+_List which earlier spec folders must be complete before this spec can be
+executed._
+
+- Depends on: `specs/NNN-feature-name/` (Status: ⬜ Pending / ✅ Complete)
+- Or: None (this is the first spec in the phase)
 
 ---
 
