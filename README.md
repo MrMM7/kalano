@@ -25,7 +25,14 @@ Landing page → Search → Product page (cheapest offer + alternatives) → Add
 | **Frontend** | Next.js, TypeScript, TailwindCSS, Zod, Vitest |
 | **Backend** | Python, FastAPI, Supabase, Pytest |
 
-> Next.js is used strictly as a frontend — all backend logic lives in the FastAPI server.
+## Development Methodology: Spec-Driven Development (SDD)
+
+Kalano is strictly developed using a **Spec-Driven Development (SDD)** workflow. Rather than ad-hoc coding, development proceeds through formalized, verifiable stages anchored by two core documents:
+
+1. **[Project Constitution](.specify/memory/constitution.md)**: The non-negotiable source of truth governing architecture, user roles, strict Next.js/FastAPI separation, database schemas, coding standards, accessibility, git conventions, and guidelines for AI agents.
+2. **[Development Roadmap](.specify/memory/roadmap.md)**: The atomic, step-by-step master plan mapping out each phase from scaffolding to launch.
+
+Each phase is planned into numbered specifications (`spec.md`, `plan.md`, `tasks.md`), executed batch-by-batch with strict automated tests, verified, and cleanly merged.
 
 ## Agent Skills
 
