@@ -6,9 +6,9 @@
 
 ---
 
-## [ ] Phase 1: Project Scaffolding
+## [x] Phase 1: Project Scaffolding
 
-### [ ] Step 1.1 — Initialize the full monorepo
+### [x] Step 1.1 — Initialize the full monorepo
 
 - Create `frontend/` and `backend/` top-level directories.
 - **Frontend**: Initialize Next.js with TypeScript, TailwindCSS, App Router. Install and configure
