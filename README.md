@@ -3,6 +3,8 @@
 A multi-vendor e-commerce platform (similar to Amazon) where multiple sellers can list offers for the same product. Buyers get the cheapest in-stock offer by default, or can manually pick a specific seller. Orders are fulfilled and tracked by Kalano's logistics team.
 
 > **Note:** This is a learning project — not a real product. Payment-related features are simulated and do not involve real money or payment processors.
+>
+> Additionally, the frontend was created without being a primary priority; the project is significantly more backend learning-heavy than frontend-focused. All core business rules, validation, domain modeling, and data persistence remain centered in FastAPI and Python.
 
 ## User Roles
 
