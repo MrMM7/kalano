@@ -2,9 +2,11 @@ from fastapi import APIRouter, Depends, Response, status
 from fastapi.responses import JSONResponse
 from supabase import Client
 
+from app.dependencies.auth import get_current_user
 from app.dependencies.config import settings
 from app.dependencies.database import get_supabase_client
 from app.models.auth import (
+    AuthenticatedUser,
     ErrorDetail,
     ErrorResponse,
     LoginResponse,
@@ -133,3 +135,33 @@ def login(
         token_type="bearer",
         user=user.to_response(),
     )
+
+
+@router.get(
+    "/auth/me",
+    response_model=UserResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Get current user profile",
+    description=(
+        "Returns the profile of the currently authenticated user. Requires a valid JWT "
+        "access token provided via httpOnly cookie (kalano_token) or Authorization Bearer header."
+    ),
+    responses={
+        200: {
+            "model": UserResponse,
+            "description": "User profile successfully retrieved.",
+        },
+        401: {
+            "model": ErrorResponse,
+            "description": "Missing, invalid, or expired token, or user no longer exists.",
+        },
+    },
+)
+async def get_me(
+    current_user: AuthenticatedUser = Depends(get_current_user),
+) -> UserResponse:
+    """Returns the public user profile for the authenticated caller.
+
+    Excludes sensitive fields like password_hash.
+    """
+    return current_user.to_response()
