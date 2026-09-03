@@ -28,6 +28,7 @@ class UserRegisterRequest(BaseModel):
     )
     password: str = Field(
         min_length=8,
+        max_length=128,
         description="Plaintext password, minimum 8 characters",
         examples=["secret12345"],
     )
