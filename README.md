@@ -34,6 +34,10 @@ Kalano is strictly developed using a **Spec-Driven Development (SDD)** workflow.
 
 Each phase is planned into numbered specifications (`spec.md`, `plan.md`, `tasks.md`), executed batch-by-batch with strict automated tests, verified, and cleanly merged.
 
+### Human Review Gate
+
+Every phase and core backend milestone undergoes thorough manual review by the project author/maintainer before final acceptance. Frontend work is treated as a lightweight learning wrapper, but all backend logic, database operations, security policies, and API contracts are rigorously reviewed to ensure deep understanding and high code quality.
+
 ## Agent Skills
 
 This project uses three custom AI agent skills (located in `.agents/skills/`) that automate the plan → build → ship lifecycle:
