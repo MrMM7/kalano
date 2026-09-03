@@ -1,9 +1,10 @@
 import logging
 
 from argon2 import PasswordHasher
+from argon2.exceptions import InvalidHashError, VerificationError, VerifyMismatchError
 from supabase import Client
 
-from app.models.auth import UserRegisterRequest, UserResponse
+from app.models.auth import AuthenticatedUser, UserRegisterRequest, UserResponse
 
 logger = logging.getLogger(__name__)
 
@@ -50,3 +51,34 @@ def register_user(payload: UserRegisterRequest, supabase_client: Client) -> User
         if code == "23505" or "23505" in error_str or "duplicate key" in error_str.lower():
             raise DuplicateEmailError("A user with this email address already exists.") from exc
         raise
+
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Verifies a plaintext password against an Argon2 hash string."""
+    try:
+        return ph.verify(hashed_password, plain_password)
+    except (VerifyMismatchError, VerificationError, InvalidHashError):
+        return False
+
+
+def authenticate_user(
+    email: str,
+    password: str,
+    supabase_client: Client,
+) -> AuthenticatedUser | None:
+    """Looks up user by normalized email and verifies their password.
+
+    Returns the AuthenticatedUser model if authentication succeeds, otherwise None.
+    """
+    normalized_email = email.strip().lower()
+    response = supabase_client.table("users").select("*").eq("email", normalized_email).execute()
+
+    if not response.data:
+        return None
+
+    user_record = response.data[0]
+    stored_hash = user_record.get("password_hash")
+    if not stored_hash or not verify_password(password, stored_hash):
+        return None
+
+    return AuthenticatedUser(**user_record)
