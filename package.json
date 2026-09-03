@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter frontend dev",
+    "dev:frontend": "pnpm --filter frontend dev",
     "dev:backend": "cd backend && uv run uvicorn app.main:app --reload --port 8000",
     "build": "pnpm --filter frontend build",
     "lint": "pnpm --filter frontend lint && cd backend && uv run ruff check .",
