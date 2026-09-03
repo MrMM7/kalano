@@ -255,11 +255,12 @@ Execution sequence:
 
 ### Manual Verification
 
-1. Start the backend API: `uv run uvicorn app.main:app --reload`.
-2. Open interactive OpenAPI docs at `http://localhost:8000/docs`.
+1. Start the backend API under a strict timeout constraint (run as a background task with a maximum 30-second timeout, or terminate immediately after verification via `manage_task kill` to prevent the agent from waiting indefinitely): `uv run uvicorn app.main:app --port 8000`.
+2. Open interactive OpenAPI docs at `http://localhost:8000/docs` (or fetch `http://localhost:8000/openapi.json`).
 3. Locate `POST /api/v1/auth/register` under the `Auth` tag.
 4. Verify summary, description, request body schema, and response schemas (201, 409, 422).
 5. Submit a registration test request and observe responses.
+6. Stop the server immediately after verification to return the agent to working state.
 
 ---
 

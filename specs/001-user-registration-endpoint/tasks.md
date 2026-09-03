@@ -168,7 +168,9 @@
 
 - **Type**: `[SEQUENTIAL]`
 - **Description**: Verify the generated OpenAPI schema exposes `/api/v1/auth/register` with correct metadata, tags, summary, and schema models.
-- **Done when**: Endpoint is verified present under tag `Auth` with request and response models properly documented.
+  - If verified by inspecting the schema directly via Python (`python -c "from app.main import app; ..."`), no server is needed.
+  - If verified by starting Uvicorn (`uv run uvicorn app.main:app`), it MUST be launched with an explicit timeout constraint (e.g. background task with a max 30s timeout, killed immediately after inspection via `manage_task kill`) to prevent the agent from waiting indefinitely.
+- **Done when**: Endpoint is verified present under tag `Auth` with request and response models properly documented, and any test server process is completely terminated.
 
 ---
 
