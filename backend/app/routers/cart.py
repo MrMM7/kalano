@@ -240,6 +240,7 @@ def delete_cart_item_endpoint(
     current_user: AuthenticatedUser = Depends(get_current_user),
     supabase_client: Client = Depends(get_supabase_client),
 ) -> CartItemDeleteResponse:
+    # 1. Verify user role
     if current_user.user_role != "buyer":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -247,6 +248,63 @@ def delete_cart_item_endpoint(
                 "error": {
                     "code": "FORBIDDEN_ROLE",
                     "message": "Only buyers are permitted to remove items from the cart.",
+                }
+            },
+        )
+
+    # 2. Check to see if the user is actually the person they claim to be (verify identity in DB)
+    user_res = (
+        supabase_client.table("users")
+        .select("id, user_role")
+        .eq("id", str(current_user.id))
+        .execute()
+    )
+    if not user_res.data or len(user_res.data) == 0:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail={
+                "error": {
+                    "code": "USER_NOT_FOUND",
+                    "message": "User no longer exists.",
+                }
+            },
+        )
+    if user_res.data[0].get("user_role") != "buyer":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "error": {
+                    "code": "FORBIDDEN_ROLE",
+                    "message": "Only buyers are permitted to remove items from the cart.",
+                }
+            },
+        )
+
+    # 3. Check to see if the user actually has that item in their cart
+    item_res = supabase_client.table("cart_items").select("id, cart_id").eq("id", item_id).execute()
+    if not item_res.data or len(item_res.data) == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "error": {
+                    "code": "CART_ITEM_NOT_FOUND",
+                    "message": "Cart item not found.",
+                }
+            },
+        )
+
+    cart_item = item_res.data[0]
+    cart_id = cart_item["cart_id"]
+
+    # Verify that the cart containing this item belongs to the authenticated user
+    cart_res = supabase_client.table("carts").select("id, user_id").eq("id", cart_id).execute()
+    if not cart_res.data or str(cart_res.data[0].get("user_id")) != str(current_user.id):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "error": {
+                    "code": "CART_ITEM_NOT_FOUND",
+                    "message": "Cart item not found.",
                 }
             },
         )

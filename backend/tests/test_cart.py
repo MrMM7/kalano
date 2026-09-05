@@ -1035,3 +1035,23 @@ def test_get_cart_populated_unjoined_fallback(client: TestClient):
         assert data["items"][0]["subtotal"] == 399.98
     finally:
         app.dependency_overrides.pop(get_supabase_client, None)
+
+
+def test_delete_cart_item_user_not_found_returns_401(client: TestClient):
+    user_id = str(uuid.uuid4())
+    token = create_access_token({"user_id": user_id, "user_role": "buyer"})
+
+    mock_supabase = MagicMock()
+    # Users table returns empty (user no longer exists)
+    mock_supabase.table.return_value = _mock_fluent_query([])
+    app.dependency_overrides[get_supabase_client] = lambda: mock_supabase
+
+    try:
+        response = client.delete(
+            "/api/v1/cart/items/10",
+            headers={"Authorization": f"Bearer {token}"},
+        )
+        assert response.status_code == 401
+        assert response.json()["error"]["code"] == "USER_NOT_FOUND"
+    finally:
+        app.dependency_overrides.pop(get_supabase_client, None)

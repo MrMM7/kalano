@@ -429,6 +429,6 @@ def delete_cart_item(
         )
 
     # 3. Delete the item
-    supabase_client.table("cart_items").delete().eq("id", item_id).execute()
+    supabase_client.table("cart_items").delete().eq("id", item_id).eq("cart_id", cart_id).execute()
 
     return CartItemDeleteResponse(message="Cart item removed successfully.")
