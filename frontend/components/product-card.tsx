@@ -16,6 +16,7 @@ export function ProductCard({ product }: ProductCardProps) {
     >
       <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-muted/30 flex items-center justify-center">
         {image_url ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
           <img
             src={image_url}
             alt={name}
