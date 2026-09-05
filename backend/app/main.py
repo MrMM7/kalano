@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.dependencies.config import settings
-from app.routers import auth, health
+from app.routers import auth, health, products
 
 app = FastAPI(
     title="Kalano API",
@@ -29,3 +29,4 @@ async def http_exception_handler(request, exc: HTTPException):
 
 app.include_router(health.router)
 app.include_router(auth.router)
+app.include_router(products.router)
