@@ -1,8 +1,10 @@
 import "@testing-library/jest-dom/vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi, beforeEach } from "vitest";
 import ProductDetailPage from "@/app/products/[id]/page";
 import * as useProductDetailModule from "@/lib/hooks/use-product-detail";
+import * as useAuthModule from "@/lib/hooks/use-auth";
+import * as useCartModule from "@/lib/hooks/use-cart";
 import { ProductDetailResponse } from "@/types/product";
 
 let mockParams = { id: "prod-100" };
@@ -50,6 +52,21 @@ const mockProductDetail: ProductDetailResponse = {
 };
 
 describe("ProductDetailPage", () => {
+  beforeEach(() => {
+    vi.spyOn(useAuthModule, "useAuth").mockReturnValue({
+      user: null,
+      isLoading: false,
+      isAuthenticated: false,
+      logout: vi.fn(),
+      refreshUser: vi.fn(),
+    });
+
+    vi.spyOn(useCartModule, "useAddToCart").mockReturnValue({
+      mutateAsync: vi.fn(),
+      isPending: false,
+    } as unknown as ReturnType<typeof useCartModule.useAddToCart>);
+  });
+
   it("renders product detail specifications and featured offer on success", () => {
     mockParams = { id: "prod-100" };
     vi.spyOn(useProductDetailModule, "useProductDetail").mockReturnValue({
