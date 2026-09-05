@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.dependencies.config import settings
-from app.routers import auth, cart, checkout, health, products
+from app.routers import auth, cart, checkout, health, orders, products
 
 app = FastAPI(
     title="Kalano API",
@@ -32,3 +32,4 @@ app.include_router(auth.router)
 app.include_router(products.router)
 app.include_router(cart.router)
 app.include_router(checkout.router)
+app.include_router(orders.router)
