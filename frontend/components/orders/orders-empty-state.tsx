@@ -13,7 +13,7 @@ export function OrdersEmptyState() {
         <Package className="h-8 w-8 text-muted-foreground" aria-hidden="true" />
       </div>
       <h2 className="text-2xl font-bold tracking-tight text-foreground">
-        You haven't placed any orders yet
+        You haven&apos;t placed any orders yet
       </h2>
       <p className="mt-2 text-sm text-muted-foreground max-w-sm mx-auto">
         When you make purchases, your order history, delivery statuses, and

@@ -19,7 +19,8 @@ import {
 
 export default function OrderHistoryPage() {
   const { user } = useAuth();
-  const { orders, totalOrders, isLoading, isError, error, refetch } = useOrders();
+  const { orders, totalOrders, isLoading, isError, error, refetch } =
+    useOrders();
 
   const isNonBuyer = user && user.user_role !== "buyer";
 

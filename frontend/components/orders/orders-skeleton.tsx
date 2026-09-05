@@ -1,6 +1,11 @@
 export function OrdersSkeleton() {
   return (
-    <div data-testid="orders-skeleton" className="space-y-4" aria-busy="true" aria-label="Loading orders">
+    <div
+      data-testid="orders-skeleton"
+      className="space-y-4"
+      aria-busy="true"
+      aria-label="Loading orders"
+    >
       {[1, 2, 3].map((i) => (
         <div
           key={i}

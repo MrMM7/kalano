@@ -138,11 +138,15 @@ describe("OrderHistoryPage", () => {
 
     expect(screen.getByTestId("orders-list")).toBeInTheDocument();
     expect(screen.getByText("Order #105")).toBeInTheDocument();
-    expect(screen.getByText("Ergonomic Mechanical Keyboard")).toBeInTheDocument();
+    expect(
+      screen.getByText("Ergonomic Mechanical Keyboard")
+    ).toBeInTheDocument();
     expect(screen.getByText(/Sold by: KeyTech Official/i)).toBeInTheDocument();
     expect(screen.getByText("$129.99")).toBeInTheDocument();
     expect(
-      screen.getByText(/Shipping to: 123 Main St, Suite 400, Cityville, CA 94105/i)
+      screen.getByText(
+        /Shipping to: 123 Main St, Suite 400, Cityville, CA 94105/i
+      )
     ).toBeInTheDocument();
 
     expect(screen.getByText("Order #104")).toBeInTheDocument();

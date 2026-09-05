@@ -43,7 +43,10 @@ export function OrderCard({ order }: OrderCardProps) {
               className="object-cover"
             />
           ) : (
-            <Package className="h-8 w-8 text-muted-foreground" aria-hidden="true" />
+            <Package
+              className="h-8 w-8 text-muted-foreground"
+              aria-hidden="true"
+            />
           )}
         </div>
 
@@ -83,7 +86,10 @@ export function OrderCard({ order }: OrderCardProps) {
 
       {/* Footer: Shipping destination */}
       <div className="border-t border-border/40 pt-3 flex items-start sm:items-center gap-2 text-xs text-muted-foreground">
-        <MapPin className="h-3.5 w-3.5 shrink-0 text-muted-foreground mt-0.5 sm:mt-0" aria-hidden="true" />
+        <MapPin
+          className="h-3.5 w-3.5 shrink-0 text-muted-foreground mt-0.5 sm:mt-0"
+          aria-hidden="true"
+        />
         <span className="truncate">Shipping to: {order.address}</span>
       </div>
     </div>
