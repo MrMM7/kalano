@@ -12,7 +12,7 @@
 | # | Spec Folder | Step | Status |
 |---|-------------|------|--------|
 | 001 | `specs/001-cart-backend-add-item/` | Step 4.1 — Cart backend: add item | ✅ Complete |
-| 002 | `specs/002-cart-backend-view-modify/` | Step 4.2 — Cart backend: view & modify | ⬜ Pending |
+| 002 | `specs/002-cart-backend-view-modify/` | Step 4.2 — Cart backend: view & modify | ✅ Complete |
 | 003 | `specs/003-cart-frontend-page/` | Step 4.3 — Cart frontend page | ⬜ Pending |
 | 004 | `specs/004-wire-add-to-cart-product-page/` | Step 4.4 — Wire "Add to Cart" on product detail page | ⬜ Pending |
 
