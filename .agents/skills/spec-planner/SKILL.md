@@ -41,18 +41,11 @@ Every artifact you produce must comply with this document.
 
 ### Step 2 — Read the Roadmap and Identify the Next Phase
 
-Read `.specify/memory/roadmap.md` and scan for the next uncompleted **phase**.
+Read `.specify/memory/roadmap.md` and scan for the next uncompleted **phase** (the first phase marked with `[ ]`).
 
-To determine what has already been completed:
-1. Check the `specs/` directory for existing numbered spec folders.
-2. Look at the actual codebase (`frontend/`, `backend/`) for evidence of
-   completed work (existing files, routes, components, endpoints).
-3. Cross-reference with the roadmap to identify the first **phase** that has NOT
-   been fully implemented.
+Do **NOT** read or inspect the codebase directories (`frontend/`, `backend/`, etc.) or search through files to determine progress — rely solely on the roadmap checkboxes (`[x]` vs `[ ]`) in `.specify/memory/roadmap.md`.
 
-Present your finding to the user: state which **phase** you believe is next,
-list **all the steps** within that phase, and provide a brief summary of what
-the whole phase entails.
+Present your finding to the user: state which **phase** is next based directly on the roadmap, list **all the steps** within that phase, and provide a brief summary of what the whole phase entails.
 
 ### Step 3 — Ask Clarifying Questions
 
