@@ -58,12 +58,12 @@ The Checkout Endpoint handles the conversion of items in an authenticated buyer'
 
 ## 4. Acceptance Criteria
 
-- [ ] AC1: Authenticated buyer with 2 items in cart successfully checks out; 2 `user_orders` rows are created with status `pending`, seller stocks are reduced by respective quantities, cart items are deleted, and HTTP 200 is returned with order summaries.
-- [ ] AC2: If cart is empty, checkout returns HTTP 400 with code `EMPTY_CART` and message "Cannot checkout with an empty cart."
-- [ ] AC3: If any cart item requests a quantity exceeding current seller product stock, checkout returns HTTP 400 with code `INSUFFICIENT_STOCK` identifying the unavailable item; no database changes occur.
-- [ ] AC4: If user role is `merchant` or `logistics`, endpoint returns HTTP 403 with code `FORBIDDEN` and message "Only buyers can place orders."
-- [ ] AC5: When `save_address` is true, the user's record in the `users` table is updated with the new address value.
-- [ ] AC6: Missing or blank address string in payload returns HTTP 422 Unprocessable Entity.
+- [x] AC1: Authenticated buyer with 2 items in cart successfully checks out; 2 `user_orders` rows are created with status `pending`, seller stocks are reduced by respective quantities, cart items are deleted, and HTTP 200 is returned with order summaries.
+- [x] AC2: If cart is empty, checkout returns HTTP 400 with code `EMPTY_CART` and message "Cannot checkout with an empty cart."
+- [x] AC3: If any cart item requests a quantity exceeding current seller product stock, checkout returns HTTP 400 with code `INSUFFICIENT_STOCK` identifying the unavailable item; no database changes occur.
+- [x] AC4: If user role is `merchant` or `logistics`, endpoint returns HTTP 403 with code `FORBIDDEN` and message "Only buyers can place orders."
+- [x] AC5: When `save_address` is true, the user's record in the `users` table is updated with the new address value.
+- [x] AC6: Missing or blank address string in payload returns HTTP 422 Unprocessable Entity.
 
 ## 5. API Contract
 
