@@ -157,9 +157,9 @@
 
 ---
 
-## [ ] Phase 5: Checkout & Orders
+## [x] Phase 5: Checkout & Orders
 
-### [ ] Step 5.1 — Checkout endpoint
+### [x] Step 5.1 — Checkout endpoint
 
 - Create `POST /api/v1/checkout`.
 - Accept: `address` (delivery address).
@@ -169,7 +169,7 @@
 - Return the list of created order IDs.
 - Write tests for: successful checkout, empty cart, out-of-stock item.
 
-### [ ] Step 5.2 — Checkout frontend page
+### [x] Step 5.2 — Checkout frontend page
 
 - Build the `/checkout` page (protected route).
 - Show an order summary (items, quantities, prices, total).
@@ -178,13 +178,13 @@
 - On "Place Order", call `POST /api/v1/checkout`.
 - On success, redirect to `/orders` with a success message.
 
-### [ ] Step 5.3 — Order history endpoint
+### [x] Step 5.3 — Order history endpoint
 
 - Create `GET /api/v1/orders` — return all orders for the current buyer, with product name, seller
   name, price, quantity, status, and order date.
 - Write tests.
 
-### [ ] Step 5.4 — Order history frontend page
+### [x] Step 5.4 — Order history frontend page
 
 - Build the `/orders` page (protected route).
 - Fetch orders from `GET /api/v1/orders`.
