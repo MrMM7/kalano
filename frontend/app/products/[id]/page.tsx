@@ -2,15 +2,19 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { useAuth } from "@/lib/hooks/use-auth";
+import { useAddToCart } from "@/lib/hooks/use-cart";
 import { useProductDetail } from "@/lib/hooks/use-product-detail";
 import { SellerOffersTable } from "@/components/seller-offers-table";
 import { ProductDetailSkeleton } from "@/components/product-detail-skeleton";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import {
   AlertCircle,
   ArrowLeft,
   CheckCircle2,
+  Loader2,
   Package,
   RefreshCw,
   ShoppingBag,
@@ -20,10 +24,19 @@ import {
 
 export default function ProductDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const productId = (params?.id as string) || "";
+  const { user } = useAuth();
+  const addToCartMutation = useAddToCart();
 
-  const { data: product, isLoading, isError, error, refetch, isFetching } =
-    useProductDetail(productId);
+  const {
+    data: product,
+    isLoading,
+    isError,
+    error,
+    refetch,
+    isFetching,
+  } = useProductDetail(productId);
 
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
 
@@ -42,6 +55,41 @@ export default function ProductDetailPage() {
     null;
 
   const isOutOfStock = !activeOffer || activeOffer.stock <= 0;
+
+  const handleAddToCart = async () => {
+    if (!user) {
+      router.push(
+        `/login?redirect=${encodeURIComponent(`/products/${productId}`)}`
+      );
+      return;
+    }
+
+    if (!activeOffer) return;
+
+    try {
+      await addToCartMutation.mutateAsync({
+        seller_product_id: activeOffer.seller_product_id,
+        quantity: 1,
+      });
+
+      toast.success(`${product?.name || "Product"} added to your cart!`, {
+        action: {
+          label: "View Cart",
+          onClick: () => router.push("/cart"),
+        },
+      });
+    } catch (err: unknown) {
+      const apiErr = err as { error?: { message?: string; code?: string } };
+      if (apiErr?.error?.code === "INSUFFICIENT_STOCK") {
+        toast.error("Cannot add to cart: stock limit reached.");
+      } else {
+        toast.error(
+          apiErr?.error?.message ||
+            "Failed to add item to cart. Please try again."
+        );
+      }
+    }
+  };
 
   // Check if error is a 404 Not Found
   const err = error as { error?: { code?: string }; message?: string } | null;
@@ -102,8 +150,8 @@ export default function ProductDetailPage() {
             Product Not Found
           </h1>
           <p className="mt-2 text-muted-foreground">
-            The product you requested doesn&apos;t exist or may have been removed
-            from our catalog.
+            The product you requested doesn&apos;t exist or may have been
+            removed from our catalog.
           </p>
           <div className="mt-8">
             <Link
@@ -128,7 +176,8 @@ export default function ProductDetailPage() {
             Unable to load product
           </h2>
           <p className="text-sm text-muted-foreground mt-1 mb-6">
-            {error?.message || "There was an unexpected error retrieving this item."}
+            {error?.message ||
+              "There was an unexpected error retrieving this item."}
           </p>
           <Button
             variant="outline"
@@ -136,7 +185,9 @@ export default function ProductDetailPage() {
             disabled={isFetching}
             className="gap-2"
           >
-            <RefreshCw className={`h-4 w-4 ${isFetching ? "animate-spin" : ""}`} />
+            <RefreshCw
+              className={`h-4 w-4 ${isFetching ? "animate-spin" : ""}`}
+            />
             Try Again
           </Button>
         </div>
@@ -146,12 +197,18 @@ export default function ProductDetailPage() {
       {!isLoading && !isError && product && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Breadcrumb Navigation */}
-          <nav aria-label="Breadcrumb" className="mb-8 flex items-center gap-2 text-sm text-muted-foreground">
+          <nav
+            aria-label="Breadcrumb"
+            className="mb-8 flex items-center gap-2 text-sm text-muted-foreground"
+          >
             <Link href="/" className="hover:text-foreground transition-colors">
               Home
             </Link>
             <span>/</span>
-            <Link href="/products" className="hover:text-foreground transition-colors">
+            <Link
+              href="/products"
+              className="hover:text-foreground transition-colors"
+            >
               Products
             </Link>
             <span>/</span>
@@ -173,7 +230,9 @@ export default function ProductDetailPage() {
               ) : (
                 <div className="flex flex-col items-center justify-center text-muted-foreground">
                   <Package className="h-20 w-20 stroke-[1.2] text-muted-foreground/40 mb-2" />
-                  <span className="text-sm font-medium">No image available</span>
+                  <span className="text-sm font-medium">
+                    No image available
+                  </span>
                 </div>
               )}
             </div>
@@ -231,14 +290,26 @@ export default function ProductDetailPage() {
 
                     <Button
                       size="lg"
+                      disabled={addToCartMutation.isPending}
+                      onClick={handleAddToCart}
                       className="w-full text-base font-semibold gap-2"
                       aria-label={`Add to cart from ${activeOffer.seller_name}`}
                     >
-                      <ShoppingCart className="h-5 w-5" />
-                      Add to Cart
+                      {addToCartMutation.isPending ? (
+                        <>
+                          <Loader2 className="h-5 w-5 animate-spin" />
+                          <span>Adding to Cart...</span>
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingCart className="h-5 w-5" />
+                          <span>Add to Cart</span>
+                        </>
+                      )}
                     </Button>
                     <p className="text-xs text-center text-muted-foreground">
-                      Fulfillment and delivery handled safely by Kalano Logistics.
+                      Fulfillment and delivery handled safely by Kalano
+                      Logistics.
                     </p>
                   </div>
                 ) : (
@@ -267,8 +338,8 @@ export default function ProductDetailPage() {
                 Compare All Merchant Offers
               </h2>
               <p className="text-sm text-muted-foreground mt-1">
-                Choose the best merchant offer based on price, delivery time, and
-                stock availability.
+                Choose the best merchant offer based on price, delivery time,
+                and stock availability.
               </p>
             </div>
 
