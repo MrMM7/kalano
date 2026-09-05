@@ -3,11 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev": "concurrently -n \"backend,frontend\" -c \"blue,green\" \"pnpm run dev:backend\" \"pnpm run dev:frontend\"",
     "dev:frontend": "pnpm --filter frontend dev",
     "dev:backend": "cd backend && uv run uvicorn app.main:app --reload --port 8000",
     "build": "pnpm --filter frontend build",
     "lint": "pnpm --filter frontend lint && cd backend && uv run ruff check .",
     "format": "pnpm --filter frontend format && cd backend && uv run ruff format .",
     "test": "pnpm --filter frontend test && cd backend && uv run pytest"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
   }
 }
