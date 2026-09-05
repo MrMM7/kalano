@@ -173,3 +173,78 @@ class ProductsListResponse(BaseModel):
         description="Number of items skipped for pagination",
         examples=[0],
     )
+
+
+class SellerOfferItem(BaseModel):
+    """Detailed seller offer item associated with a product."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    seller_product_id: UUID = Field(
+        description="Unique identifier of the seller product offer",
+        examples=["7ca85f64-5717-4562-b3fc-2c963f66afa7"],
+    )
+    seller_id: UUID = Field(
+        description="Unique identifier of the merchant / seller",
+        examples=["9da85f64-5717-4562-b3fc-2c963f66afa8"],
+    )
+    seller_name: str = Field(
+        description="Display name of the seller",
+        examples=["AudioTech Store"],
+    )
+    price: float = Field(
+        description="Unit price of the product offered by the seller in USD",
+        examples=[149.99],
+    )
+    stock: int = Field(
+        description="Available inventory count (0 or greater)",
+        examples=[25],
+    )
+    estimated_delivery_days: int | None = Field(
+        default=None,
+        description="Estimated delivery transit duration in calendar days",
+        examples=[3],
+    )
+
+
+class ProductDetailResponse(BaseModel):
+    """Complete product detail specification including all seller offers."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: UUID = Field(
+        description="Unique identifier of the product",
+        examples=["3fa85f64-5717-4562-b3fc-2c963f66afa6"],
+    )
+    name: str = Field(
+        description="Product name / title",
+        examples=["Wireless Noise-Cancelling Headphones"],
+    )
+    description: str = Field(
+        description="Detailed product description",
+        examples=[
+            "High-fidelity audio with adaptive active noise cancellation and 30-hour battery life."
+        ],
+    )
+    brand: str = Field(
+        description="Manufacturer or brand name",
+        examples=["SoundWave"],
+    )
+    image_url: str | None = Field(
+        default=None,
+        description="Public URL for product image, null if no image has been uploaded",
+        examples=["https://example.com/images/headphones.jpg"],
+    )
+    created_at: datetime | str | None = Field(
+        default=None,
+        description="Timestamp when the product was added to the catalog",
+        examples=["2026-09-01T12:00:00Z"],
+    )
+    cheapest_offer: CheapestOfferResponse | None = Field(
+        default=None,
+        description="Lowest-priced in-stock seller offer, or null if currently out of stock",
+    )
+    offers: list[SellerOfferItem] = Field(
+        default_factory=list,
+        description="All active seller offers for this product, sorted by price ascending",
+    )
