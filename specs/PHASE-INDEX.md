@@ -15,7 +15,7 @@
 | 002 | `specs/002-product-detail-endpoint/` | Step 3.2 — Product detail endpoint | ✅ Complete |
 | 003 | `specs/003-landing-page/` | Step 3.3 — Landing page (Home) | ✅ Complete |
 | 004 | `specs/004-product-search-listing-page/` | Step 3.4 — Product search & listing page | ✅ Complete |
-| 005 | `specs/005-product-detail-page/` | Step 3.5 — Product detail page | ⬜ Pending |
+| 005 | `specs/005-product-detail-page/` | Step 3.5 — Product detail page | ✅ Complete |
 
 ---
 
