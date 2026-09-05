@@ -12,7 +12,7 @@
 | # | Spec Folder | Step | Status |
 |---|-------------|------|--------|
 | 001 | `specs/001-checkout-endpoint/` | Step 5.1 — Checkout endpoint | ✅ Complete |
-| 002 | `specs/002-checkout-frontend-page/` | Step 5.2 — Checkout frontend page | ⬜ Pending |
+| 002 | `specs/002-checkout-frontend-page/` | Step 5.2 — Checkout frontend page | ✅ Complete |
 | 003 | `specs/003-order-history-endpoint/` | Step 5.3 — Order history endpoint | ⬜ Pending |
 | 004 | `specs/004-order-history-frontend-page/` | Step 5.4 — Order history frontend page | ⬜ Pending |
 
