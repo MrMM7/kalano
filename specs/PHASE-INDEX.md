@@ -11,7 +11,7 @@
 
 | # | Spec Folder | Step | Status |
 |---|-------------|------|--------|
-| 001 | `specs/001-list-products-endpoint/` | Step 3.1 — List products endpoint | ⬜ Pending |
+| 001 | `specs/001-list-products-endpoint/` | Step 3.1 — List products endpoint | ✅ Complete |
 | 002 | `specs/002-product-detail-endpoint/` | Step 3.2 — Product detail endpoint | ⬜ Pending |
 | 003 | `specs/003-landing-page/` | Step 3.3 — Landing page (Home) | ⬜ Pending |
 | 004 | `specs/004-product-search-listing-page/` | Step 3.4 — Product search & listing page | ⬜ Pending |
