@@ -11,7 +11,7 @@
 
 | # | Spec Folder | Step | Status |
 |---|-------------|------|--------|
-| 001 | `specs/001-merchant-list-offers-endpoint/` | Step 6.1 — Merchant: list my offers endpoint | ⬜ Pending |
+| 001 | `specs/001-merchant-list-offers-endpoint/` | Step 6.1 — Merchant: list my offers endpoint | ✅ Complete |
 | 002 | `specs/002-merchant-add-offer-endpoint/` | Step 6.2 — Merchant: add offer to existing product | ⬜ Pending |
 | 003 | `specs/003-merchant-create-product-offer-endpoint/` | Step 6.3 — Merchant: create new product + offer | ⬜ Pending |
 | 004 | `specs/004-merchant-update-delete-offers-endpoints/` | Step 6.4 — Merchant: update & delete offers | ⬜ Pending |
