@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
 from supabase import Client
 
 from app.dependencies.auth import get_current_user
@@ -8,9 +8,11 @@ from app.models.dashboard import (
     MerchantOfferCreateRequest,
     MerchantOfferItemResponse,
     MerchantOfferResponse,
+    MerchantProductCreateResponse,
 )
 from app.services.dashboard_service import (
     create_merchant_offer,
+    create_product_and_offer,
     get_merchant_offers,
 )
 
@@ -121,4 +123,110 @@ def add_merchant_offer(
         supabase_client=supabase_client,
         seller_id=current_user.id,
         payload=payload,
+    )
+
+
+@router.post(
+    "/products",
+    response_model=MerchantProductCreateResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Create new product and initial seller offer",
+    description=(
+        "Accepts multipart form data to create a new catalog product, optionally uploads an "
+        "image to Supabase Storage, and attaches an initial seller offer owned by the "
+        "authenticated merchant. Only accessible by users with the merchant role."
+    ),
+    responses={
+        201: {
+            "model": MerchantProductCreateResponse,
+            "description": "Successfully created catalog product and merchant offer.",
+        },
+        400: {
+            "description": "Image upload failed or invalid file format.",
+        },
+        401: {
+            "description": "Authentication credentials missing or invalid.",
+        },
+        403: {
+            "description": "Forbidden: user does not have the merchant role.",
+        },
+        422: {
+            "description": "Validation error: invalid request fields.",
+        },
+        500: {
+            "description": "Internal server error.",
+        },
+    },
+)
+def create_merchant_product(
+    name: str = Form(..., description="Product title / name"),
+    description: str = Form(..., description="Detailed description of the product"),
+    brand: str = Form(..., description="Brand or manufacturer of the product"),
+    price: float = Form(..., gt=0, description="Unit price set by the merchant (strictly > 0)"),
+    stock: int = Form(..., ge=0, description="Available inventory stock count (>= 0)"),
+    estimated_delivery_days: int | None = Form(
+        default=None,
+        ge=1,
+        description="Estimated transit/delivery time in days (>= 1)",
+    ),
+    image: UploadFile | None = File(
+        default=None,
+        description="Optional product image file to upload",
+    ),
+    current_user: AuthenticatedUser = Depends(get_current_user),
+    supabase_client: Client = Depends(get_supabase_client),
+) -> MerchantProductCreateResponse:
+    if current_user.user_role != "merchant":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Only merchants can create products and offers.",
+                }
+            },
+        )
+
+    # Validate non-empty strings
+    if not name.strip():
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail={
+                "error": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "Product name cannot be empty.",
+                }
+            },
+        )
+    if not description.strip():
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail={
+                "error": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "Product description cannot be empty.",
+                }
+            },
+        )
+    if not brand.strip():
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail={
+                "error": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "Product brand cannot be empty.",
+                }
+            },
+        )
+
+    return create_product_and_offer(
+        supabase_client=supabase_client,
+        seller_id=current_user.id,
+        name=name.strip(),
+        description=description.strip(),
+        brand=brand.strip(),
+        price=price,
+        stock=stock,
+        estimated_delivery_days=estimated_delivery_days,
+        image_file=image,
     )
