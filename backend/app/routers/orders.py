@@ -3,7 +3,7 @@ from supabase import Client
 
 from app.dependencies.auth import get_current_user
 from app.dependencies.database import get_supabase_client
-from app.models.auth import AuthenticatedUser, ErrorResponse
+from app.models.auth import AuthenticatedUser
 from app.models.order import OrderListResponse
 from app.services.order_service import get_buyer_orders
 
@@ -26,11 +26,9 @@ router = APIRouter(prefix="/api/v1/orders", tags=["Orders"])
             "description": "Successfully retrieved order history.",
         },
         401: {
-            "model": ErrorResponse,
             "description": "Authentication credentials missing or invalid.",
         },
         403: {
-            "model": ErrorResponse,
             "description": "Forbidden: user does not have the buyer role.",
         },
     },

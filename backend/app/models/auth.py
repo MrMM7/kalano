@@ -5,21 +5,6 @@ from uuid import UUID
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
-class ErrorDetail(BaseModel):
-    code: str = Field(
-        description="Machine-readable error code",
-        examples=["DUPLICATE_EMAIL"],
-    )
-    message: str = Field(
-        description="Human-readable error description",
-        examples=["A user with this email address already exists."],
-    )
-
-
-class ErrorResponse(BaseModel):
-    error: ErrorDetail = Field(description="Standard error envelope")
-
-
 class UserRegisterRequest(BaseModel):
     email: str = Field(
         pattern=r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",

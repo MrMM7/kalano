@@ -1,5 +1,4 @@
-from fastapi import APIRouter, Depends, Response, status
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from supabase import Client
 
 from app.dependencies.auth import get_current_user
@@ -7,8 +6,6 @@ from app.dependencies.config import settings
 from app.dependencies.database import get_supabase_client
 from app.models.auth import (
     AuthenticatedUser,
-    ErrorDetail,
-    ErrorResponse,
     LoginResponse,
     LogoutResponse,
     TokenClaims,
@@ -42,7 +39,6 @@ router = APIRouter(prefix="/api/v1", tags=["Auth"])
             "description": "User successfully created.",
         },
         409: {
-            "model": ErrorResponse,
             "description": "Email address already in use.",
         },
         422: {
@@ -53,19 +49,19 @@ router = APIRouter(prefix="/api/v1", tags=["Auth"])
 def register(
     payload: UserRegisterRequest,
     supabase_client: Client = Depends(get_supabase_client),
-) -> UserResponse | JSONResponse:
+) -> UserResponse:
     try:
         return register_user(payload=payload, supabase_client=supabase_client)
     except DuplicateEmailError as exc:
-        return JSONResponse(
+        raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            content=ErrorResponse(
-                error=ErrorDetail(
-                    code="DUPLICATE_EMAIL",
-                    message=str(exc),
-                )
-            ).model_dump(),
-        )
+            detail={
+                "error": {
+                    "code": "DUPLICATE_EMAIL",
+                    "message": str(exc),
+                }
+            },
+        ) from exc
 
 
 @router.post(
@@ -83,7 +79,6 @@ def register(
             "description": "User successfully authenticated.",
         },
         401: {
-            "model": ErrorResponse,
             "description": "Invalid credentials (wrong password or non-existent email).",
         },
         422: {
@@ -95,7 +90,7 @@ def login(
     payload: UserLoginRequest,
     response: Response,
     supabase_client: Client = Depends(get_supabase_client),
-) -> LoginResponse | JSONResponse:
+) -> LoginResponse:
     user = authenticate_user(
         email=payload.email,
         password=payload.password,
@@ -103,14 +98,14 @@ def login(
     )
 
     if not user:
-        return JSONResponse(
+        raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            content=ErrorResponse(
-                error=ErrorDetail(
-                    code="INVALID_CREDENTIALS",
-                    message="Invalid email or password.",
-                )
-            ).model_dump(),
+            detail={
+                "error": {
+                    "code": "INVALID_CREDENTIALS",
+                    "message": "Invalid email or password.",
+                }
+            },
         )
 
     # Prepare token claims
@@ -153,7 +148,6 @@ def login(
             "description": "User profile successfully retrieved.",
         },
         401: {
-            "model": ErrorResponse,
             "description": "Missing, invalid, or expired token, or user no longer exists.",
         },
     },

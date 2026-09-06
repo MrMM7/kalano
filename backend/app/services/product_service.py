@@ -2,9 +2,9 @@ import logging
 import re
 from uuid import UUID
 
+from fastapi import HTTPException, status
 from supabase import Client
 
-from app.models.auth import ErrorDetail
 from app.models.product import (
     CatalogOffersMap,
     CheapestOfferResponse,
@@ -110,14 +110,19 @@ def list_products(
 def get_product_by_id(
     supabase_client: Client,
     product_id: UUID,
-) -> ProductDetailResponse | ErrorDetail:
+) -> ProductDetailResponse:
     """Retrieve product detail and all seller offers sorted by price ascending."""
     prod_resp = supabase_client.table("products").select("*").eq("id", str(product_id)).execute()
 
     if not prod_resp.data:
-        return ErrorDetail(
-            code="RESOURCE_NOT_FOUND",
-            message=f"Product with ID '{product_id}' was not found.",
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "error": {
+                    "code": "RESOURCE_NOT_FOUND",
+                    "message": f"Product with ID '{product_id}' was not found.",
+                }
+            },
         )
 
     product_record = ProductRecord.model_validate(prod_resp.data[0])

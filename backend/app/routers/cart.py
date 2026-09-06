@@ -3,7 +3,7 @@ from supabase import Client
 
 from app.dependencies.auth import get_current_user
 from app.dependencies.database import get_supabase_client
-from app.models.auth import AuthenticatedUser, ErrorResponse
+from app.models.auth import AuthenticatedUser
 from app.models.cart import (
     CartItemCreate,
     CartItemDeleteResponse,
@@ -37,26 +37,21 @@ router = APIRouter(prefix="/api/v1/cart", tags=["Cart"])
             "description": "Item successfully added or incremented in the cart.",
         },
         400: {
-            "model": ErrorResponse,
             "description": "Insufficient inventory stock for requested quantity.",
         },
         401: {
-            "model": ErrorResponse,
             "description": "Authentication credentials missing or invalid.",
         },
         403: {
-            "model": ErrorResponse,
             "description": "Forbidden: user does not have the buyer role.",
         },
         404: {
-            "model": ErrorResponse,
             "description": "Seller product offer not found.",
         },
         422: {
             "description": "Validation error in request payload.",
         },
         500: {
-            "model": ErrorResponse,
             "description": "Internal server error.",
         },
     },
@@ -100,15 +95,12 @@ def post_cart_item(
             "description": "Cart successfully retrieved.",
         },
         401: {
-            "model": ErrorResponse,
             "description": "Authentication credentials missing or invalid.",
         },
         403: {
-            "model": ErrorResponse,
             "description": "Forbidden: user does not have the buyer role.",
         },
         500: {
-            "model": ErrorResponse,
             "description": "Internal server error.",
         },
     },
@@ -154,26 +146,21 @@ def get_cart(
             "description": "Cart item quantity updated successfully.",
         },
         400: {
-            "model": ErrorResponse,
             "description": "Insufficient inventory stock for requested quantity.",
         },
         401: {
-            "model": ErrorResponse,
             "description": "Authentication credentials missing or invalid.",
         },
         403: {
-            "model": ErrorResponse,
             "description": "Forbidden: user does not have the buyer role.",
         },
         404: {
-            "model": ErrorResponse,
             "description": "Cart item not found or does not belong to user.",
         },
         422: {
             "description": "Validation error in request payload.",
         },
         500: {
-            "model": ErrorResponse,
             "description": "Internal server error.",
         },
     },
@@ -215,22 +202,18 @@ def patch_cart_item(
             "description": "Cart item removed successfully.",
         },
         401: {
-            "model": ErrorResponse,
             "description": "Authentication credentials missing or invalid.",
         },
         403: {
-            "model": ErrorResponse,
             "description": "Forbidden: user does not have the buyer role.",
         },
         404: {
-            "model": ErrorResponse,
             "description": "Cart item not found or does not belong to user.",
         },
         422: {
             "description": "Validation error in path parameters.",
         },
         500: {
-            "model": ErrorResponse,
             "description": "Internal server error.",
         },
     },

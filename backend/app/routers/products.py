@@ -1,11 +1,9 @@
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Path, Query, status
-from fastapi.responses import JSONResponse
 from supabase import Client
 
 from app.dependencies.database import get_supabase_client
-from app.models.auth import ErrorDetail, ErrorResponse
 from app.models.product import ProductDetailResponse, ProductsListResponse
 from app.services.product_service import get_product_by_id, list_products
 
@@ -32,7 +30,6 @@ router = APIRouter(prefix="/api/v1", tags=["Products"])
             "description": "Validation error in query parameters.",
         },
         500: {
-            "model": ErrorResponse,
             "description": "Internal server error.",
         },
     },
@@ -81,14 +78,12 @@ def get_products(
             "description": "Product details and seller offers retrieved successfully.",
         },
         404: {
-            "model": ErrorResponse,
             "description": "Product with the given ID does not exist.",
         },
         422: {
             "description": "Validation error: provided product_id is not a valid UUID.",
         },
         500: {
-            "model": ErrorResponse,
             "description": "Internal server error.",
         },
     },
@@ -100,16 +95,8 @@ def get_product(
         examples=["3fa85f64-5717-4562-b3fc-2c963f66afa6"],
     ),
     supabase_client: Client = Depends(get_supabase_client),
-) -> ProductDetailResponse | JSONResponse:
-    result = get_product_by_id(
+) -> ProductDetailResponse:
+    return get_product_by_id(
         supabase_client=supabase_client,
         product_id=product_id,
     )
-
-    if isinstance(result, ErrorDetail):
-        return JSONResponse(
-            status_code=status.HTTP_404_NOT_FOUND,
-            content=ErrorResponse(error=result).model_dump(),
-        )
-
-    return result

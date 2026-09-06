@@ -3,7 +3,7 @@ from supabase import Client
 
 from app.dependencies.auth import get_current_user
 from app.dependencies.database import get_supabase_client
-from app.models.auth import AuthenticatedUser, ErrorResponse
+from app.models.auth import AuthenticatedUser
 from app.models.checkout import CheckoutRequest, CheckoutResponse
 from app.services.checkout_service import process_checkout
 
@@ -27,22 +27,18 @@ router = APIRouter(prefix="/api/v1/checkout", tags=["Checkout"])
             "description": "Order successfully placed and cart cleared.",
         },
         400: {
-            "model": ErrorResponse,
             "description": "Empty cart or insufficient inventory stock.",
         },
         401: {
-            "model": ErrorResponse,
             "description": "Authentication credentials missing or invalid.",
         },
         403: {
-            "model": ErrorResponse,
             "description": "Forbidden: user does not have the buyer role.",
         },
         422: {
             "description": "Validation error in request payload (e.g. blank address).",
         },
         500: {
-            "model": ErrorResponse,
             "description": "Internal server error.",
         },
     },
