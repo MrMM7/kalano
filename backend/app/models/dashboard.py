@@ -192,3 +192,76 @@ class MerchantOfferDeleteResponse(BaseModel):
         description="Unique identifier of the deleted seller product offer",
         examples=["8fa85f64-5717-4562-b3fc-2c963f66afa9"],
     )
+
+
+class MerchantOrderItemResponse(BaseModel):
+    """Response representation of an incoming customer order for a merchant's offer."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int = Field(
+        description="Unique integer identifier of the order record in user_orders",
+        examples=[101],
+    )
+    product_id: UUID = Field(
+        description="Unique identifier of the purchased catalog product",
+        examples=["3fa85f64-5717-4562-b3fc-2c963f66afa6"],
+    )
+    product_name: str = Field(
+        description="Title/name of the purchased product",
+        examples=["Wireless Noise-Cancelling Headphones"],
+    )
+    product_brand: str = Field(
+        description="Brand name of the product",
+        examples=["SoundWave"],
+    )
+    product_image_url: str | None = Field(
+        default=None,
+        description="Public URL to the product image in Supabase Storage if available",
+        examples=["https://example.com/images/headphones.jpg"],
+    )
+    bought_price: float = Field(
+        description="Purchase unit price agreed at checkout in EUR/USD",
+        examples=[149.99],
+    )
+    quantity: int = Field(
+        description="Number of units ordered",
+        examples=[1],
+    )
+    total_price: float = Field(
+        description="Calculated total price (bought_price * quantity)",
+        examples=[149.99],
+    )
+    status: str = Field(
+        description=(
+            "Delivery fulfillment status from delivered_types enum: "
+            "pending, confirmed, shipped, delivered, cancelled, returned"
+        ),
+        examples=["pending"],
+    )
+    address: str = Field(
+        description="Customer delivery destination address",
+        examples=["742 Evergreen Terrace, Springfield"],
+    )
+    buyer_name: str | None = Field(
+        default=None,
+        description="Display name of the buyer who placed the order",
+        examples=["Jane Buyer"],
+    )
+    created_at: datetime | str | None = Field(
+        default=None,
+        description="Timestamp when the order was placed",
+        examples=["2026-09-06T14:30:00Z"],
+    )
+
+
+class MerchantOrderStatusUpdateRequest(BaseModel):
+    """Payload for updating delivery status of an incoming order (marking ready for pickup)."""
+
+    status: str = Field(
+        description=(
+            "Target delivery status. Merchants are strictly allowed to transition orders "
+            "from pending to confirmed (ready for courier pickup)."
+        ),
+        examples=["confirmed"],
+    )
