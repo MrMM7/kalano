@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile, status
 from supabase import Client
 
 from app.dependencies.auth import get_current_user
@@ -12,6 +12,8 @@ from app.models.dashboard import (
     MerchantOfferItemResponse,
     MerchantOfferResponse,
     MerchantOfferUpdateRequest,
+    MerchantOrderItemResponse,
+    MerchantOrderStatusUpdateRequest,
     MerchantProductCreateResponse,
 )
 from app.services.dashboard_service import (
@@ -19,7 +21,9 @@ from app.services.dashboard_service import (
     create_product_and_offer,
     delete_merchant_offer,
     get_merchant_offers,
+    get_merchant_orders,
     update_merchant_offer,
+    update_merchant_order_status,
 )
 
 router = APIRouter(prefix="/api/v1/dashboard", tags=["Dashboard"])
@@ -344,4 +348,116 @@ def delete_offer(
         supabase_client=supabase_client,
         seller_id=current_user.id,
         offer_id=offer_id,
+    )
+
+
+@router.get(
+    "/orders",
+    response_model=list[MerchantOrderItemResponse],
+    status_code=status.HTTP_200_OK,
+    summary="Retrieve merchant incoming orders",
+    description=(
+        "Returns all customer orders where the authenticated merchant is the fulfilling seller. "
+        "Supports filtering by delivery status. Only accessible by users with the merchant role."
+    ),
+    responses={
+        200: {
+            "model": list[MerchantOrderItemResponse],
+            "description": "Successfully retrieved merchant incoming orders.",
+        },
+        401: {
+            "description": "Authentication credentials missing or invalid.",
+        },
+        403: {
+            "description": "Forbidden: user does not have the merchant role.",
+        },
+        500: {
+            "description": "Internal server error.",
+        },
+    },
+)
+def list_merchant_orders(
+    order_status: str | None = Query(
+        default=None,
+        alias="status",
+        description="Filter orders by delivery status (pending, confirmed, shipped, etc.)",
+    ),
+    current_user: AuthenticatedUser = Depends(get_current_user),
+    supabase_client: Client = Depends(get_supabase_client),
+) -> list[MerchantOrderItemResponse]:
+    if current_user.user_role != "merchant":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Only merchants can view incoming orders.",
+                }
+            },
+        )
+
+    return get_merchant_orders(
+        supabase_client=supabase_client,
+        seller_id=current_user.id,
+        status_filter=order_status,
+    )
+
+
+@router.patch(
+    "/orders/{order_id}/status",
+    response_model=MerchantOrderItemResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Update merchant order status (Mark ready for pickup)",
+    description=(
+        "Transitions an incoming customer order from pending to confirmed, signaling that "
+        "the package is packed and ready for logistics courier pickup. "
+        "Only accessible by the merchant who owns the offer for this order."
+    ),
+    responses={
+        200: {
+            "model": MerchantOrderItemResponse,
+            "description": "Successfully updated order status to confirmed.",
+        },
+        400: {
+            "description": "Bad request: invalid status transition.",
+        },
+        401: {
+            "description": "Authentication credentials missing or invalid.",
+        },
+        403: {
+            "description": "Forbidden: user is not a merchant or does not own this order.",
+        },
+        404: {
+            "description": "Not found: order with specified ID does not exist.",
+        },
+        422: {
+            "description": "Validation error: invalid request payload.",
+        },
+        500: {
+            "description": "Internal server error.",
+        },
+    },
+)
+def update_order_status(
+    order_id: int,
+    payload: MerchantOrderStatusUpdateRequest,
+    current_user: AuthenticatedUser = Depends(get_current_user),
+    supabase_client: Client = Depends(get_supabase_client),
+) -> MerchantOrderItemResponse:
+    if current_user.user_role != "merchant":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Only merchants can update order statuses.",
+                }
+            },
+        )
+
+    return update_merchant_order_status(
+        supabase_client=supabase_client,
+        seller_id=current_user.id,
+        order_id=order_id,
+        new_status=payload.status,
     )
