@@ -12,7 +12,7 @@
 | # | Spec Folder | Step | Status |
 |---|-------------|------|--------|
 | 001 | `specs/001-logistics-view-orders-endpoint/` | Step 7.1 — Logistics: view all orders endpoint | ✅ Complete |
-| 002 | `specs/002-logistics-update-order-status-endpoint/` | Step 7.2 — Logistics: update order status | ⬜ Pending |
+| 002 | `specs/002-logistics-update-order-status-endpoint/` | Step 7.2 — Logistics: update order status | ✅ Complete |
 | 003 | `specs/003-logistics-dashboard-frontend/` | Step 7.3 — Logistics dashboard frontend | ⬜ Pending |
 
 ---

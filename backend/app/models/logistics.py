@@ -76,3 +76,15 @@ class LogisticsOrderItemResponse(BaseModel):
         description="Timestamp when the order was placed",
         examples=["2026-09-06T14:30:00Z"],
     )
+
+
+class LogisticsOrderStatusUpdateRequest(BaseModel):
+    """Request model for updating an order's delivery fulfillment status."""
+
+    status: str = Field(
+        description=(
+            "Target fulfillment status corresponding to delivered_types enum. "
+            "Allowed values: pending, confirmed, shipped, delivered, cancelled, returned"
+        ),
+        examples=["shipped"],
+    )
