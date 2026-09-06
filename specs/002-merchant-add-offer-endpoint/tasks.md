@@ -2,10 +2,8 @@
 
 > **Spec**: `specs/002-merchant-add-offer-endpoint/spec.md`
 > **Plan**: `specs/002-merchant-add-offer-endpoint/plan.md`
-> **Branch**: `feat/merchant-dashboard`
 > **Spec**: 002 of 006 in phase
-> **Date**: 2026-09-06
-> **Status**: Draft
+> **Status**: Complete
 >
 > **CRITICAL CONTENT RULE**: DO NOT write implementation code or logic blocks in this document.
 > Everything must be written in **pure text** (natural language, tables, bullet points). Only mock code

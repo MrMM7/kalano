@@ -52,3 +52,65 @@ class MerchantOfferItemResponse(BaseModel):
         description="Timestamp when the offer was created",
         examples=["2026-09-01T12:00:00Z"],
     )
+
+
+class MerchantOfferCreateRequest(BaseModel):
+    """Payload for creating a new merchant offer on an existing catalog product."""
+
+    product_id: UUID = Field(
+        description="Unique identifier of the target catalog product",
+        examples=["3fa85f64-5717-4562-b3fc-2c963f66afa6"],
+    )
+    price: float = Field(
+        gt=0,
+        description="Unit price set by the merchant in EUR/USD (strictly greater than 0)",
+        examples=[89.99],
+    )
+    stock: int = Field(
+        ge=0,
+        description="Available inventory stock count (must be non-negative)",
+        examples=[15],
+    )
+    estimated_delivery_days: int | None = Field(
+        default=None,
+        ge=1,
+        description="Estimated transit/delivery time in days (must be at least 1 day)",
+        examples=[2],
+    )
+
+
+class MerchantOfferResponse(BaseModel):
+    """Response representation of a newly created or updated merchant product offer."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: UUID = Field(
+        description="Unique identifier of the seller product offer",
+        examples=["8fa85f64-5717-4562-b3fc-2c963f66afa9"],
+    )
+    product_id: UUID = Field(
+        description="Unique identifier of the catalog product",
+        examples=["3fa85f64-5717-4562-b3fc-2c963f66afa6"],
+    )
+    seller_id: UUID = Field(
+        description="Unique identifier of the merchant / seller user",
+        examples=["9da85f64-5717-4562-b3fc-2c963f66afa8"],
+    )
+    price: float = Field(
+        description="Unit price set by the merchant in EUR/USD",
+        examples=[89.99],
+    )
+    stock: int = Field(
+        description="Available inventory stock count",
+        examples=[15],
+    )
+    estimated_delivery_days: int | None = Field(
+        default=None,
+        description="Estimated transit/delivery time in days",
+        examples=[2],
+    )
+    created_at: datetime | None = Field(
+        default=None,
+        description="Timestamp when the offer was created",
+        examples=["2026-09-06T12:00:00Z"],
+    )
