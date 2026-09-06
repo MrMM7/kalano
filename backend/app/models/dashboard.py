@@ -156,3 +156,39 @@ class MerchantProductCreateResponse(BaseModel):
     offer: MerchantOfferResponse = Field(
         description="Newly created merchant seller offer information"
     )
+
+
+class MerchantOfferUpdateRequest(BaseModel):
+    """Payload for partially updating price, stock, or delivery estimate for a merchant offer."""
+
+    price: float | None = Field(
+        default=None,
+        gt=0,
+        description="Unit price set by the merchant in EUR/USD (strictly greater than 0)",
+        examples=[79.99],
+    )
+    stock: int | None = Field(
+        default=None,
+        ge=0,
+        description="Available inventory stock count (must be non-negative)",
+        examples=[50],
+    )
+    estimated_delivery_days: int | None = Field(
+        default=None,
+        ge=1,
+        description="Estimated transit/delivery time in days (must be at least 1 day)",
+        examples=[1],
+    )
+
+
+class MerchantOfferDeleteResponse(BaseModel):
+    """Response payload confirming successful deletion of a merchant offer."""
+
+    message: str = Field(
+        description="Confirmation message upon successful deletion",
+        examples=["Offer successfully deleted"],
+    )
+    id: UUID = Field(
+        description="Unique identifier of the deleted seller product offer",
+        examples=["8fa85f64-5717-4562-b3fc-2c963f66afa9"],
+    )
