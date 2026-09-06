@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
 from supabase import Client
 
@@ -6,14 +8,18 @@ from app.dependencies.database import get_supabase_client
 from app.models.auth import AuthenticatedUser
 from app.models.dashboard import (
     MerchantOfferCreateRequest,
+    MerchantOfferDeleteResponse,
     MerchantOfferItemResponse,
     MerchantOfferResponse,
+    MerchantOfferUpdateRequest,
     MerchantProductCreateResponse,
 )
 from app.services.dashboard_service import (
     create_merchant_offer,
     create_product_and_offer,
+    delete_merchant_offer,
     get_merchant_offers,
+    update_merchant_offer,
 )
 
 router = APIRouter(prefix="/api/v1/dashboard", tags=["Dashboard"])
@@ -229,4 +235,113 @@ def create_merchant_product(
         stock=stock,
         estimated_delivery_days=estimated_delivery_days,
         image_file=image,
+    )
+
+
+@router.patch(
+    "/offers/{offer_id}",
+    response_model=MerchantOfferResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Update merchant offer details",
+    description=(
+        "Updates price, stock quantity, or estimated delivery days for a specific seller offer. "
+        "The merchant must own the offer."
+    ),
+    responses={
+        200: {
+            "model": MerchantOfferResponse,
+            "description": "Successfully updated merchant offer.",
+        },
+        400: {
+            "description": "Bad request: empty update payload.",
+        },
+        401: {
+            "description": "Authentication credentials missing or invalid.",
+        },
+        403: {
+            "description": "Forbidden: caller is not a merchant or does not own this offer.",
+        },
+        404: {
+            "description": "Not found: offer with specified ID does not exist.",
+        },
+        422: {
+            "description": "Validation error: invalid field values.",
+        },
+        500: {
+            "description": "Internal server error.",
+        },
+    },
+)
+def update_offer(
+    offer_id: UUID,
+    payload: MerchantOfferUpdateRequest,
+    current_user: AuthenticatedUser = Depends(get_current_user),
+    supabase_client: Client = Depends(get_supabase_client),
+) -> MerchantOfferResponse:
+    if current_user.user_role != "merchant":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Only merchants can update offers.",
+                }
+            },
+        )
+
+    return update_merchant_offer(
+        supabase_client=supabase_client,
+        seller_id=current_user.id,
+        offer_id=offer_id,
+        payload=payload,
+    )
+
+
+@router.delete(
+    "/offers/{offer_id}",
+    response_model=MerchantOfferDeleteResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Delete merchant offer",
+    description=(
+        "Permanently removes an offer owned by the authenticated merchant from the marketplace."
+    ),
+    responses={
+        200: {
+            "model": MerchantOfferDeleteResponse,
+            "description": "Successfully deleted merchant offer.",
+        },
+        401: {
+            "description": "Authentication credentials missing or invalid.",
+        },
+        403: {
+            "description": "Forbidden: caller is not a merchant or does not own this offer.",
+        },
+        404: {
+            "description": "Not found: offer with specified ID does not exist.",
+        },
+        500: {
+            "description": "Internal server error.",
+        },
+    },
+)
+def delete_offer(
+    offer_id: UUID,
+    current_user: AuthenticatedUser = Depends(get_current_user),
+    supabase_client: Client = Depends(get_supabase_client),
+) -> MerchantOfferDeleteResponse:
+    if current_user.user_role != "merchant":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Only merchants can delete offers.",
+                }
+            },
+        )
+
+    return delete_merchant_offer(
+        supabase_client=supabase_client,
+        seller_id=current_user.id,
+        offer_id=offer_id,
     )
