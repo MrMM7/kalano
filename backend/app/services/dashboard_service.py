@@ -11,6 +11,7 @@ from app.models.dashboard import (
     MerchantOfferItemResponse,
     MerchantOfferResponse,
     MerchantOfferUpdateRequest,
+    MerchantOrderItemResponse,
     MerchantProductCreateResponse,
     ProductRecordModel,
 )
@@ -452,4 +453,277 @@ def delete_merchant_offer(
     return MerchantOfferDeleteResponse(
         message="Offer successfully deleted",
         id=UUID(offer_id_str),
+    )
+
+
+def get_merchant_orders(
+    supabase_client: Client,
+    seller_id: UUID | str,
+    status_filter: str | None = None,
+) -> list[MerchantOrderItemResponse]:
+    """Fetch all customer orders placed for the authenticated merchant's offers.
+
+    Supports optional filtering by delivery status.
+    """
+    seller_id_str = str(seller_id)
+    select_fields = (
+        "id, product_id, bought_price, buyer_id, delivery_types, address, "
+        "seller_id, quantity, created_at, "
+        "products(id, name, brand, image_url), "
+        "users!user_orders_buyer_id_fkey(id, display_name)"
+    )
+
+    try:
+        query = (
+            supabase_client.table("user_orders")
+            .select(select_fields)
+            .eq("seller_id", seller_id_str)
+        )
+        if status_filter:
+            query = query.eq("delivery_types", status_filter)
+        query_res = query.order("created_at", desc=True).execute()
+        raw_orders = query_res.data or []
+    except Exception:
+        # Fallback query without joins if relation syntax differs
+        fallback_fields = (
+            "id, product_id, bought_price, buyer_id, delivery_types, address, "
+            "seller_id, quantity, created_at"
+        )
+        try:
+            fallback_query = (
+                supabase_client.table("user_orders")
+                .select(fallback_fields)
+                .eq("seller_id", seller_id_str)
+            )
+            if status_filter:
+                fallback_query = fallback_query.eq("delivery_types", status_filter)
+            query_res = fallback_query.order("created_at", desc=True).execute()
+            raw_orders = query_res.data or []
+        except Exception as exc:
+            logger.error(f"Failed to fetch merchant orders: {exc}")
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail={
+                    "error": {
+                        "code": "INTERNAL_SERVER_ERROR",
+                        "message": "Failed to fetch merchant orders.",
+                    }
+                },
+            ) from exc
+
+    orders: list[MerchantOrderItemResponse] = []
+    for row in raw_orders:
+        product_data = row.get("products")
+        if not isinstance(product_data, dict):
+            product_data = {}
+            if row.get("product_id"):
+                try:
+                    p_res = (
+                        supabase_client.table("products")
+                        .select("name, brand, image_url")
+                        .eq("id", str(row["product_id"]))
+                        .execute()
+                    )
+                    if p_res.data:
+                        product_data = p_res.data[0]
+                except Exception:
+                    pass
+
+        buyer_data = row.get("users")
+        buyer_name = None
+        if isinstance(buyer_data, dict):
+            buyer_name = buyer_data.get("display_name")
+        elif row.get("buyer_id"):
+            try:
+                b_res = (
+                    supabase_client.table("users")
+                    .select("display_name")
+                    .eq("id", str(row["buyer_id"]))
+                    .execute()
+                )
+                if b_res.data:
+                    buyer_name = b_res.data[0].get("display_name")
+            except Exception:
+                pass
+
+        bought_price = float(row.get("bought_price", 0.0))
+        quantity = int(row.get("quantity", 1))
+        total_price = round(bought_price * quantity, 2)
+
+        orders.append(
+            MerchantOrderItemResponse(
+                id=int(row["id"]),
+                product_id=UUID(str(row["product_id"])),
+                product_name=product_data.get("name") or "",
+                product_brand=product_data.get("brand") or "",
+                product_image_url=product_data.get("image_url"),
+                bought_price=bought_price,
+                quantity=quantity,
+                total_price=total_price,
+                status=str(row.get("delivery_types") or "pending"),
+                address=str(row.get("address") or ""),
+                buyer_name=buyer_name,
+                created_at=row.get("created_at"),
+            )
+        )
+
+    return orders
+
+
+def update_merchant_order_status(
+    supabase_client: Client,
+    seller_id: UUID | str,
+    order_id: int,
+    new_status: str,
+) -> MerchantOrderItemResponse:
+    """Transition an incoming order from pending to confirmed (ready for courier pickup)."""
+    seller_id_str = str(seller_id)
+
+    # 1. Query the order by ID
+    try:
+        select_fields = (
+            "id, product_id, bought_price, buyer_id, delivery_types, address, "
+            "seller_id, quantity, created_at, "
+            "products(id, name, brand, image_url), "
+            "users!user_orders_buyer_id_fkey(id, display_name)"
+        )
+        query_res = (
+            supabase_client.table("user_orders").select(select_fields).eq("id", order_id).execute()
+        )
+        rows = query_res.data or []
+    except Exception:
+        fallback_fields = (
+            "id, product_id, bought_price, buyer_id, delivery_types, address, "
+            "seller_id, quantity, created_at"
+        )
+        try:
+            query_res = (
+                supabase_client.table("user_orders")
+                .select(fallback_fields)
+                .eq("id", order_id)
+                .execute()
+            )
+            rows = query_res.data or []
+        except Exception as exc:
+            logger.error(f"Failed to query order: {exc}")
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail={
+                    "error": {
+                        "code": "INTERNAL_SERVER_ERROR",
+                        "message": "Failed to query order.",
+                    }
+                },
+            ) from exc
+
+    # 2. Check if order exists
+    if not rows:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "error": {
+                    "code": "ORDER_NOT_FOUND",
+                    "message": f"Order with ID {order_id} was not found.",
+                }
+            },
+        )
+
+    order_record = rows[0]
+
+    # 3. Check seller ownership
+    if str(order_record.get("seller_id")) != seller_id_str:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "error": {
+                    "code": "FORBIDDEN",
+                    "message": "You do not have permission to modify this order.",
+                }
+            },
+        )
+
+    # 4. Validate transition: target status must be "confirmed", current status must be "pending"
+    current_status = str(order_record.get("delivery_types") or "")
+    if new_status != "confirmed" or current_status != "pending":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail={
+                "error": {
+                    "code": "INVALID_STATUS_TRANSITION",
+                    "message": (
+                        f"Cannot transition order from '{current_status}' to '{new_status}'. "
+                        "Merchants can only transition pending orders to confirmed."
+                    ),
+                }
+            },
+        )
+
+    # 5. Update status in database
+    try:
+        supabase_client.table("user_orders").update({"delivery_types": "confirmed"}).eq(
+            "id", order_id
+        ).execute()
+    except Exception as exc:
+        logger.error(f"Failed to update order status: {exc}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "error": {
+                    "code": "INTERNAL_SERVER_ERROR",
+                    "message": "Failed to update order status.",
+                }
+            },
+        ) from exc
+
+    # 6. Format and return updated order
+    product_data = order_record.get("products")
+    if not isinstance(product_data, dict):
+        product_data = {}
+        if order_record.get("product_id"):
+            try:
+                p_res = (
+                    supabase_client.table("products")
+                    .select("name, brand, image_url")
+                    .eq("id", str(order_record["product_id"]))
+                    .execute()
+                )
+                if p_res.data:
+                    product_data = p_res.data[0]
+            except Exception:
+                pass
+
+    buyer_data = order_record.get("users")
+    buyer_name = None
+    if isinstance(buyer_data, dict):
+        buyer_name = buyer_data.get("display_name")
+    elif order_record.get("buyer_id"):
+        try:
+            b_res = (
+                supabase_client.table("users")
+                .select("display_name")
+                .eq("id", str(order_record["buyer_id"]))
+                .execute()
+            )
+            if b_res.data:
+                buyer_name = b_res.data[0].get("display_name")
+        except Exception:
+            pass
+
+    bought_price = float(order_record.get("bought_price", 0.0))
+    quantity = int(order_record.get("quantity", 1))
+    total_price = round(bought_price * quantity, 2)
+
+    return MerchantOrderItemResponse(
+        id=int(order_record["id"]),
+        product_id=UUID(str(order_record["product_id"])),
+        product_name=product_data.get("name") or "",
+        product_brand=product_data.get("brand") or "",
+        product_image_url=product_data.get("image_url"),
+        bought_price=bought_price,
+        quantity=quantity,
+        total_price=total_price,
+        status="confirmed",
+        address=str(order_record.get("address") or ""),
+        buyer_name=buyer_name,
+        created_at=order_record.get("created_at"),
     )
