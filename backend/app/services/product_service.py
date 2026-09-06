@@ -67,8 +67,7 @@ def list_products(
 
     # Batch query seller_products for these products with stock > 0, joining users
     select_fields = (
-        "id, product_id, seller_id, price, stock, "
-        "estimated_delivery_days, created_at, users(display_name)"
+        "id, product_id, seller_id, price, stock, estimated_delivery_days, users(display_name)"
     )
     offers_response = (
         supabase_client.table("seller_products")
@@ -128,8 +127,7 @@ def get_product_by_id(
     product_record = ProductRecord.model_validate(prod_resp.data[0])
 
     select_fields = (
-        "id, product_id, seller_id, price, stock, "
-        "estimated_delivery_days, created_at, users(display_name)"
+        "id, product_id, seller_id, price, stock, estimated_delivery_days, users(display_name)"
     )
     offers_resp = (
         supabase_client.table("seller_products")

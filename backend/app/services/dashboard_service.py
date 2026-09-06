@@ -26,7 +26,7 @@ def get_merchant_offers(
     """Query seller_products for offers belonging to seller_id, joining product details."""
     seller_id_str = str(seller_id)
     select_fields = (
-        "id, product_id, seller_id, price, stock, estimated_delivery_days, created_at, "
+        "id, product_id, seller_id, price, stock, estimated_delivery_days, "
         "products(id, name, brand, description, image_url)"
     )
 
@@ -35,7 +35,7 @@ def get_merchant_offers(
             supabase_client.table("seller_products")
             .select(select_fields)
             .eq("seller_id", seller_id_str)
-            .order("created_at", desc=True)
+            .order("id", desc=True)
             .execute()
         )
         raw_offers = query_res.data or []
@@ -148,7 +148,6 @@ def create_merchant_offer(
 
     # 3. Insert new offer into seller_products
     offer_id = str(uuid4())
-    created_at = datetime.now(timezone.utc).isoformat()
     insert_data = {
         "id": offer_id,
         "product_id": product_id_str,
@@ -156,7 +155,6 @@ def create_merchant_offer(
         "price": payload.price,
         "stock": payload.stock,
         "estimated_delivery_days": payload.estimated_delivery_days,
-        "created_at": created_at,
     }
 
     try:
@@ -188,8 +186,10 @@ def create_merchant_offer(
 def upload_product_image(
     image_file: UploadFile,
     supabase_client: Client,
-) -> str:
-    """Upload product image file to Supabase Storage products bucket and return public URL."""
+) -> tuple[str, str]:
+    """Upload product image file to Supabase Storage products bucket and return
+    (public_url, storage_path).
+    """
     try:
         content_type = image_file.content_type or "application/octet-stream"
         file_bytes = image_file.file.read()
@@ -204,7 +204,7 @@ def upload_product_image(
             file=file_bytes,
             file_options={"content-type": content_type},
         )
-        return storage_bucket.get_public_url(unique_name)
+        return storage_bucket.get_public_url(unique_name), unique_name
     except Exception as exc:
         logger.error(f"Failed to upload product image to Supabase Storage: {exc}")
         raise HTTPException(
@@ -234,8 +234,9 @@ def create_product_and_offer(
 
     # 1. Upload image if provided
     image_url: str | None = None
+    uploaded_image_path: str | None = None
     if image_file and image_file.filename:
-        image_url = upload_product_image(
+        image_url, uploaded_image_path = upload_product_image(
             image_file=image_file,
             supabase_client=supabase_client,
         )
@@ -256,6 +257,13 @@ def create_product_and_offer(
         prod_res = supabase_client.table("products").insert(product_data).execute()
         created_prod = prod_res.data[0] if prod_res.data else product_data
     except Exception as exc:
+        if uploaded_image_path:
+            try:
+                supabase_client.storage.from_("products").remove([uploaded_image_path])
+            except Exception as cleanup_exc:
+                logger.warning(
+                    f"Failed to clean up uploaded image {uploaded_image_path}: {cleanup_exc}"
+                )
         logger.error(f"Failed to insert product record: {exc}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -269,7 +277,6 @@ def create_product_and_offer(
 
     # 3. Insert into seller_products table
     offer_id = str(uuid4())
-    offer_created_at = datetime.now(timezone.utc).isoformat()
     offer_data = {
         "id": offer_id,
         "product_id": product_id,
@@ -277,7 +284,6 @@ def create_product_and_offer(
         "price": price,
         "stock": stock,
         "estimated_delivery_days": estimated_delivery_days,
-        "created_at": offer_created_at,
     }
 
     try:
@@ -285,6 +291,18 @@ def create_product_and_offer(
         created_offer = offer_res.data[0] if offer_res.data else offer_data
     except Exception as exc:
         logger.error(f"Failed to insert seller offer record: {exc}")
+        # Rollback product record and uploaded image
+        try:
+            supabase_client.table("products").delete().eq("id", product_id).execute()
+        except Exception as cleanup_exc:
+            logger.warning(f"Failed to clean up product {product_id}: {cleanup_exc}")
+        if uploaded_image_path:
+            try:
+                supabase_client.storage.from_("products").remove([uploaded_image_path])
+            except Exception as cleanup_exc:
+                logger.warning(
+                    f"Failed to clean up uploaded image {uploaded_image_path}: {cleanup_exc}"
+                )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={
