@@ -15,7 +15,7 @@
 | 002 | `specs/002-merchant-add-offer-endpoint/` | Step 6.2 — Merchant: add offer to existing product | ✅ Complete |
 | 003 | `specs/003-merchant-create-product-offer-endpoint/` | Step 6.3 — Merchant: create new product + offer | ✅ Complete |
 | 004 | `specs/004-merchant-update-delete-offers-endpoints/` | Step 6.4 — Merchant: update & delete offers | ✅ Complete |
-| 005 | `specs/005-merchant-incoming-orders-endpoint/` | Step 6.5 — Merchant: view incoming orders | ⬜ Pending |
+| 005 | `specs/005-merchant-incoming-orders-endpoint/` | Step 6.5 — Merchant: view incoming orders | ✅ Complete |
 | 006 | `specs/006-seller-dashboard-frontend/` | Step 6.6 — Seller dashboard frontend | ⬜ Pending |
 
 ---
