@@ -156,10 +156,10 @@ def test_add_item_increments_existing_item_quantity(client: TestClient):
     app.dependency_overrides[get_supabase_client] = lambda: mock_supabase
 
     try:
+        client.cookies.set("kalano_token", token)
         response = client.post(
             "/api/v1/cart/items",
             json={"seller_product_id": seller_prod_id, "quantity": 3},
-            cookies={"kalano_token": token},
         )
         assert response.status_code == 200
         data = response.json()

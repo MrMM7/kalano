@@ -32,7 +32,8 @@ def test_me_with_valid_cookie_token(client: TestClient):
 
     try:
         token = create_access_token({"user_id": user_id, "user_role": "buyer"})
-        response = client.get("/api/v1/auth/me", cookies={"kalano_token": token})
+        client.cookies.set("kalano_token", token)
+        response = client.get("/api/v1/auth/me")
 
         assert response.status_code == 200
         data = response.json()
@@ -117,9 +118,9 @@ def test_me_cookie_precedence(client: TestClient):
         cookie_token = create_access_token({"user_id": cookie_user_id, "user_role": "buyer"})
         header_token = create_access_token({"user_id": header_user_id, "user_role": "merchant"})
 
+        client.cookies.set("kalano_token", cookie_token)
         response = client.get(
             "/api/v1/auth/me",
-            cookies={"kalano_token": cookie_token},
             headers={"Authorization": f"Bearer {header_token}"},
         )
 
@@ -150,7 +151,8 @@ def test_me_expired_token(client: TestClient):
         algorithm=settings.jwt_algorithm,
     )
 
-    response = client.get("/api/v1/auth/me", cookies={"kalano_token": token})
+    client.cookies.set("kalano_token", token)
+    response = client.get("/api/v1/auth/me")
     assert response.status_code == 401
     assert response.json() == {
         "error": {
@@ -161,7 +163,8 @@ def test_me_expired_token(client: TestClient):
 
 
 def test_me_invalid_token_string(client: TestClient):
-    response = client.get("/api/v1/auth/me", cookies={"kalano_token": "not-a-valid-jwt"})
+    client.cookies.set("kalano_token", "not-a-valid-jwt")
+    response = client.get("/api/v1/auth/me")
     assert response.status_code == 401
     assert response.json() == {
         "error": {
@@ -179,7 +182,8 @@ def test_me_invalid_signature(client: TestClient):
         algorithm=settings.jwt_algorithm,
     )
 
-    response = client.get("/api/v1/auth/me", cookies={"kalano_token": token})
+    client.cookies.set("kalano_token", token)
+    response = client.get("/api/v1/auth/me")
     assert response.status_code == 401
     assert response.json() == {
         "error": {
@@ -191,7 +195,8 @@ def test_me_invalid_signature(client: TestClient):
 
 def test_me_token_missing_user_id(client: TestClient):
     token = create_access_token({"user_role": "buyer"})
-    response = client.get("/api/v1/auth/me", cookies={"kalano_token": token})
+    client.cookies.set("kalano_token", token)
+    response = client.get("/api/v1/auth/me")
     assert response.status_code == 401
     assert response.json() == {
         "error": {
@@ -209,7 +214,8 @@ def test_me_user_not_found(client: TestClient):
 
     try:
         token = create_access_token({"user_id": "nonexistent-user-id", "user_role": "buyer"})
-        response = client.get("/api/v1/auth/me", cookies={"kalano_token": token})
+        client.cookies.set("kalano_token", token)
+        response = client.get("/api/v1/auth/me")
 
         assert response.status_code == 401
         assert response.json() == {

@@ -190,7 +190,7 @@ def create_merchant_product(
     # Validate non-empty strings
     if not name.strip():
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             detail={
                 "error": {
                     "code": "VALIDATION_ERROR",
@@ -200,7 +200,7 @@ def create_merchant_product(
         )
     if not description.strip():
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             detail={
                 "error": {
                     "code": "VALIDATION_ERROR",
@@ -210,7 +210,7 @@ def create_merchant_product(
         )
     if not brand.strip():
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             detail={
                 "error": {
                     "code": "VALIDATION_ERROR",

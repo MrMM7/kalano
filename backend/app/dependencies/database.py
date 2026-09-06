@@ -1,4 +1,5 @@
-from supabase import Client, create_client
+import httpx
+from supabase import Client, ClientOptions, create_client
 
 from app.dependencies.config import settings
 
@@ -11,5 +12,6 @@ def get_supabase_client() -> Client:
         _supabase_client = create_client(
             settings.supabase_url,
             settings.supabase_key,
+            options=ClientOptions(httpx_client=httpx.Client()),
         )
     return _supabase_client
