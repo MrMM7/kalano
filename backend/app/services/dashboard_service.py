@@ -7,8 +7,10 @@ from supabase import Client
 
 from app.models.dashboard import (
     MerchantOfferCreateRequest,
+    MerchantOfferDeleteResponse,
     MerchantOfferItemResponse,
     MerchantOfferResponse,
+    MerchantOfferUpdateRequest,
     MerchantProductCreateResponse,
     ProductRecordModel,
 )
@@ -310,4 +312,144 @@ def create_product_and_offer(
             estimated_delivery_days=created_offer.get("estimated_delivery_days"),
             created_at=created_offer.get("created_at"),
         ),
+    )
+
+
+def verify_offer_ownership(
+    supabase_client: Client,
+    offer_id: UUID | str,
+    seller_id: UUID | str,
+) -> dict:
+    """Verify an offer exists and is owned by the specified seller."""
+    offer_id_str = str(offer_id)
+    seller_id_str = str(seller_id)
+
+    try:
+        res = supabase_client.table("seller_products").select("*").eq("id", offer_id_str).execute()
+        rows = res.data or []
+    except Exception as exc:
+        logger.error(f"Failed to query offer: {exc}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "error": {
+                    "code": "INTERNAL_SERVER_ERROR",
+                    "message": "Failed to query offer.",
+                }
+            },
+        ) from exc
+
+    if not rows:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "error": {
+                    "code": "OFFER_NOT_FOUND",
+                    "message": f"Offer with ID '{offer_id_str}' was not found.",
+                }
+            },
+        )
+
+    record = rows[0]
+    if str(record.get("seller_id")) != seller_id_str:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "error": {
+                    "code": "FORBIDDEN",
+                    "message": "You do not have permission to modify this offer.",
+                }
+            },
+        )
+
+    return record
+
+
+def update_merchant_offer(
+    supabase_client: Client,
+    seller_id: UUID | str,
+    offer_id: UUID | str,
+    payload: MerchantOfferUpdateRequest,
+) -> MerchantOfferResponse:
+    """Update price, stock, or estimated delivery days for a seller offer."""
+    existing_offer = verify_offer_ownership(
+        supabase_client=supabase_client,
+        offer_id=offer_id,
+        seller_id=seller_id,
+    )
+
+    update_data = payload.model_dump(exclude_unset=True)
+    if not update_data:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail={
+                "error": {
+                    "code": "EMPTY_UPDATE",
+                    "message": "At least one field must be provided for update.",
+                }
+            },
+        )
+
+    try:
+        update_res = (
+            supabase_client.table("seller_products")
+            .update(update_data)
+            .eq("id", str(offer_id))
+            .execute()
+        )
+        updated_row = update_res.data[0] if update_res.data else {**existing_offer, **update_data}
+    except Exception as exc:
+        logger.error(f"Failed to update offer: {exc}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "error": {
+                    "code": "INTERNAL_SERVER_ERROR",
+                    "message": "Failed to update offer.",
+                }
+            },
+        ) from exc
+
+    return MerchantOfferResponse(
+        id=updated_row["id"],
+        product_id=updated_row["product_id"],
+        seller_id=updated_row["seller_id"],
+        price=float(updated_row["price"]),
+        stock=int(updated_row["stock"]),
+        estimated_delivery_days=updated_row.get("estimated_delivery_days"),
+        created_at=updated_row.get("created_at"),
+    )
+
+
+def delete_merchant_offer(
+    supabase_client: Client,
+    seller_id: UUID | str,
+    offer_id: UUID | str,
+) -> MerchantOfferDeleteResponse:
+    """Permanently delete a seller offer, clearing cart items first."""
+    verify_offer_ownership(
+        supabase_client=supabase_client,
+        offer_id=offer_id,
+        seller_id=seller_id,
+    )
+
+    offer_id_str = str(offer_id)
+    try:
+        supabase_client.table("cart_items").delete().eq("seller_product_id", offer_id_str).execute()
+        supabase_client.table("seller_products").delete().eq("id", offer_id_str).execute()
+    except Exception as exc:
+        logger.error(f"Failed to delete offer: {exc}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "error": {
+                    "code": "INTERNAL_SERVER_ERROR",
+                    "message": "Failed to delete offer.",
+                }
+            },
+        ) from exc
+
+    return MerchantOfferDeleteResponse(
+        message="Offer successfully deleted",
+        id=UUID(offer_id_str),
     )
