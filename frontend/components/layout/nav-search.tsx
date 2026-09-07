@@ -8,11 +8,13 @@ import { cn } from "@/lib/utils";
 export interface NavSearchProps {
   className?: string;
   placeholder?: string;
+  onSearchSubmit?: () => void;
 }
 
 function NavSearchForm({
   className,
   placeholder = "Search products...",
+  onSearchSubmit,
 }: NavSearchProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -31,6 +33,7 @@ function NavSearchForm({
     e.preventDefault();
     const trimmed = query.trim();
     if (trimmed) {
+      onSearchSubmit?.();
       router.push(`/products?q=${encodeURIComponent(trimmed)}`);
     }
   }

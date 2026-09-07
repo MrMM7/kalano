@@ -5,6 +5,7 @@ import { ShoppingBag } from "lucide-react";
 import { NavSearch } from "@/components/layout/nav-search";
 import { CartBadge } from "@/components/layout/cart-badge";
 import { UserNav } from "@/components/layout/user-nav";
+import { MobileNav } from "@/components/layout/mobile-nav";
 import { cn } from "@/lib/utils";
 
 export interface NavbarProps {
@@ -35,21 +36,22 @@ export function Navbar({ className }: NavbarProps = {}) {
           </Link>
           <Link
             href="/products"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            className="hidden md:inline-flex text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           >
             Catalog
           </Link>
         </div>
 
-        {/* Center: Persistent Search */}
-        <div className="flex-1 max-w-md mx-4">
+        {/* Center: Persistent Search (hidden on mobile, visible on tablet/desktop md+) */}
+        <div className="hidden md:flex flex-1 max-w-md mx-4">
           <NavSearch />
         </div>
 
-        {/* Right: Cart Badge & User Menu */}
-        <div className="flex items-center gap-3">
+        {/* Right: Cart Badge, User Menu, & Mobile Drawer Trigger */}
+        <div className="flex items-center gap-2 sm:gap-3">
           <CartBadge />
           <UserNav />
+          <MobileNav />
         </div>
       </nav>
     </header>
