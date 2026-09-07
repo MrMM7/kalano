@@ -14,7 +14,7 @@
 | 001 | [`specs/001-shared-layout-and-navigation/`](file:///D:/Code/A%20new%20era/kalano/specs/001-shared-layout-and-navigation/) | Step 8.1 — Shared layout & navigation | ✅ Complete |
 | 002 | [`specs/002-loading-and-error-states/`](file:///D:/Code/A%20new%20era/kalano/specs/002-loading-and-error-states/) | Step 8.2 — Loading & error states | ✅ Complete |
 | 003 | [`specs/003-accessibility-pass/`](file:///D:/Code/A%20new%20era/kalano/specs/003-accessibility-pass/) | Step 8.3 — Accessibility pass | ✅ Complete |
-| 004 | [`specs/004-responsive-design-pass/`](file:///D:/Code/A%20new%20era/kalano/specs/004-responsive-design-pass/) | Step 8.4 — Responsive design pass | ⬜ Pending |
+| 004 | [`specs/004-responsive-design-pass/`](file:///D:/Code/A%20new%20era/kalano/specs/004-responsive-design-pass/) | Step 8.4 — Responsive design pass | ✅ Complete |
 | 005 | [`specs/005-end-to-end-smoke-test/`](file:///D:/Code/A%20new%20era/kalano/specs/005-end-to-end-smoke-test/) | Step 8.5 — End-to-end smoke test | ⬜ Pending |
 | 006 | [`specs/006-readme-and-documentation/`](file:///D:/Code/A%20new%20era/kalano/specs/006-readme-and-documentation/) | Step 8.6 — README & documentation | ⬜ Pending |
 
