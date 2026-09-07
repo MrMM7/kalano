@@ -138,7 +138,7 @@ export default function LogisticsPage() {
   // Role Protection: Restricted to logistics users
   if (user.user_role !== "logistics") {
     return (
-      <div className="min-h-screen bg-background text-foreground">
+      <div className="bg-background text-foreground">
         <header className="border-b border-border/40 bg-background/95 backdrop-blur">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <Link
@@ -152,7 +152,7 @@ export default function LogisticsPage() {
           </div>
         </header>
 
-        <main className="max-w-2xl mx-auto px-4 py-16 text-center">
+        <div className="max-w-2xl mx-auto px-4 py-16 text-center">
           <div
             role="alert"
             data-testid="access-denied-banner"
@@ -199,7 +199,7 @@ export default function LogisticsPage() {
               )}
             </div>
           </div>
-        </main>
+        </div>
       </div>
     );
   }

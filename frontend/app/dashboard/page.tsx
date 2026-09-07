@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useAuth } from "@/lib/hooks/use-auth";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { buttonVariants } from "@/components/ui/button";
-import { AlertCircle, ShoppingBag, Truck } from "lucide-react";
+import { AlertCircle, Truck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function DashboardPage() {
@@ -45,21 +45,8 @@ export default function DashboardPage() {
 
   if (user.user_role !== "merchant") {
     return (
-      <div className="min-h-screen bg-background text-foreground">
-        <header className="border-b border-border/40 bg-background/95 backdrop-blur">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <Link
-              href="/"
-              className="flex items-center gap-2 text-xl font-bold tracking-tight text-primary"
-              aria-label="Kalano Home"
-            >
-              <ShoppingBag className="h-6 w-6" aria-hidden="true" />
-              <span>Kalano</span>
-            </Link>
-          </div>
-        </header>
-
-        <main className="max-w-2xl mx-auto px-4 py-16 text-center">
+      <div className="bg-background text-foreground">
+        <div className="max-w-2xl mx-auto px-4 py-16 text-center">
           <div
             role="alert"
             data-testid="access-restricted-banner"
@@ -105,7 +92,7 @@ export default function DashboardPage() {
               )}
             </div>
           </div>
-        </main>
+        </div>
       </div>
     );
   }

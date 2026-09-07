@@ -17,7 +17,6 @@ import {
   Loader2,
   Package,
   RefreshCw,
-  ShoppingBag,
   ShoppingCart,
   Truck,
 } from "lucide-react";
@@ -99,41 +98,7 @@ export default function ProductDetailPage() {
     err?.message?.includes("404");
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      {/* Top Header */}
-      <header className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-xl font-bold tracking-tight text-primary"
-            aria-label="Kalano Home"
-          >
-            <ShoppingBag className="h-6 w-6" aria-hidden="true" />
-            <span>Kalano</span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/products"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Browse Catalog
-            </Link>
-            <Link
-              href="/login"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Log In
-            </Link>
-            <Link
-              href="/signup"
-              className="inline-flex items-center justify-center rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
-            >
-              Sign Up
-            </Link>
-          </div>
-        </div>
-      </header>
-
+    <div className="bg-background text-foreground">
       {/* Loading Skeleton */}
       {isLoading && <ProductDetailSkeleton />}
 
@@ -351,6 +316,6 @@ export default function ProductDetailPage() {
           </div>
         </div>
       )}
-    </main>
+    </div>
   );
 }

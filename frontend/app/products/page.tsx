@@ -123,7 +123,9 @@ function ProductsCatalogContent() {
             variant="outline"
             className="gap-2"
           >
-            <RefreshCw className={`h-4 w-4 ${isFetching ? "animate-spin" : ""}`} />
+            <RefreshCw
+              className={`h-4 w-4 ${isFetching ? "animate-spin" : ""}`}
+            />
             Try Again
           </Button>
         </div>
@@ -137,7 +139,9 @@ function ProductsCatalogContent() {
         >
           <ShoppingBag className="mx-auto h-12 w-12 text-muted-foreground/50 mb-3" />
           <h2 className="text-lg font-semibold text-foreground">
-            {q.trim() ? `No products found matching "${q.trim()}"` : "No products available"}
+            {q.trim()
+              ? `No products found matching "${q.trim()}"`
+              : "No products available"}
           </h2>
           <p className="text-sm text-muted-foreground mt-2 mb-6">
             {q.trim()

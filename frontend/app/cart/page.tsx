@@ -19,7 +19,6 @@ import {
   AlertCircle,
   ArrowLeft,
   RefreshCw,
-  ShoppingBag,
   Store,
   Truck,
 } from "lucide-react";
@@ -79,35 +78,7 @@ export default function CartPage() {
   };
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      {/* Navigation Header */}
-      <header className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-xl font-bold tracking-tight text-primary"
-            aria-label="Kalano Home"
-          >
-            <ShoppingBag className="h-6 w-6" aria-hidden="true" />
-            <span>Kalano</span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/products"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Browse Catalog
-            </Link>
-            <Link
-              href="/cart"
-              className="text-sm font-semibold text-primary transition-colors"
-            >
-              Cart
-            </Link>
-          </div>
-        </div>
-      </header>
-
+    <main className="bg-background text-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Breadcrumb Navigation */}
         <nav

@@ -18,7 +18,6 @@ import { toast } from "sonner";
 import {
   AlertCircle,
   ArrowLeft,
-  ShoppingBag,
   ShoppingCart,
   Store,
   Truck,
@@ -105,29 +104,7 @@ export default function CheckoutPage() {
   const isNonBuyer = user && user.user_role !== "buyer";
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      {/* Navigation Header */}
-      <header className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-xl font-bold tracking-tight text-primary"
-            aria-label="Kalano Home"
-          >
-            <ShoppingBag className="h-6 w-6" aria-hidden="true" />
-            <span>Kalano</span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/cart"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Back to Cart
-            </Link>
-          </div>
-        </div>
-      </header>
-
+    <main className="bg-background text-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Breadcrumb Navigation */}
         <nav

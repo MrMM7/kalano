@@ -15,41 +15,7 @@ export default function Home() {
   });
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      {/* Header / Nav Bar */}
-      <header className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-xl font-bold tracking-tight text-primary"
-            aria-label="Kalano Home"
-          >
-            <ShoppingBag className="h-6 w-6" aria-hidden="true" />
-            <span>Kalano</span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/products"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Browse Catalog
-            </Link>
-            <Link
-              href="/login"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Log In
-            </Link>
-            <Link
-              href="/signup"
-              className="inline-flex items-center justify-center rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
-            >
-              Sign Up
-            </Link>
-          </div>
-        </div>
-      </header>
-
+    <div className="bg-background text-foreground">
       {/* Hero Section */}
       <section
         className="relative overflow-hidden border-b border-border/40 bg-gradient-to-b from-muted/30 to-background py-16 sm:py-24"
@@ -71,7 +37,8 @@ export default function Home() {
             A modern multi-vendor marketplace
           </p>
           <p className="mt-2 text-sm text-muted-foreground max-w-xl mx-auto">
-            Discover verified merchant offers with the lowest prices guaranteed and Kalano logistics fulfillment.
+            Discover verified merchant offers with the lowest prices guaranteed
+            and Kalano logistics fulfillment.
           </p>
 
           <div className="mt-8 max-w-xl mx-auto">
@@ -94,7 +61,8 @@ export default function Home() {
               Featured Products
             </h2>
             <p className="text-sm text-muted-foreground mt-1">
-              Top curated items available now across verified marketplace sellers.
+              Top curated items available now across verified marketplace
+              sellers.
             </p>
           </div>
           <Link
@@ -128,7 +96,8 @@ export default function Home() {
               Unable to load products
             </h3>
             <p className="text-sm text-muted-foreground mt-1 mb-6">
-              {error?.message || "There was a problem connecting to the catalog service."}
+              {error?.message ||
+                "There was a problem connecting to the catalog service."}
             </p>
             <Button
               onClick={() => refetch()}
@@ -136,7 +105,9 @@ export default function Home() {
               variant="outline"
               className="gap-2"
             >
-              <RefreshCw className={`h-4 w-4 ${isFetching ? "animate-spin" : ""}`} />
+              <RefreshCw
+                className={`h-4 w-4 ${isFetching ? "animate-spin" : ""}`}
+              />
               Try Again
             </Button>
           </div>
@@ -167,7 +138,6 @@ export default function Home() {
           </div>
         )}
       </section>
-    </main>
+    </div>
   );
 }
-
