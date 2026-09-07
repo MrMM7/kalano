@@ -5,7 +5,7 @@
 > **Branch**: `feat/polish-and-integration`
 > **Spec**: 006 of 006 in phase
 > **Date**: 2026-09-07
-> **Status**: Draft
+> **Status**: Complete
 >
 > **CRITICAL CONTENT RULE**: DO NOT write implementation code or logic blocks in this document.
 > Everything must be written in **pure text** (natural language, tables, bullet points). Only mock code
@@ -25,7 +25,7 @@
 
 ## Prior Spec Dependencies
 
-- Depends on: `specs/001-shared-layout-and-navigation/` through `specs/005-end-to-end-smoke-test/` (Status: ⬜ Pending).
+- Depends on: `specs/001-shared-layout-and-navigation/` through `specs/005-end-to-end-smoke-test/` (Status: ✅ Complete).
 
 ---
 
