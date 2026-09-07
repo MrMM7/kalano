@@ -101,7 +101,7 @@ export default function SignupPage() {
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-muted/40 p-4">
-      <Card className="max-w-xl w-full mx-auto shadow-md">
+      <Card className="max-w-xl w-full mx-auto shadow-md border-border/80 rounded-2xl">
         <CardHeader className="text-center space-y-1">
           <CardTitle
             role="heading"

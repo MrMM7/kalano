@@ -89,7 +89,7 @@ export function DashboardShell({ user }: DashboardShellProps) {
 
           {/* Quick Metrics Cards */}
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-3 bg-card border border-border rounded-xl px-4 py-2.5 shadow-xs">
+            <div className="flex items-center gap-3 bg-card border border-border/80 rounded-xl px-4 py-2.5 shadow-sm hover:shadow-md transition-all duration-200">
               <div className="rounded-lg bg-primary/10 p-2 text-primary">
                 <Package className="h-5 w-5" aria-hidden="true" />
               </div>
@@ -106,7 +106,7 @@ export function DashboardShell({ user }: DashboardShellProps) {
               </div>
             </div>
 
-            <div className="flex items-center gap-3 bg-card border border-border rounded-xl px-4 py-2.5 shadow-xs">
+            <div className="flex items-center gap-3 bg-card border border-border/80 rounded-xl px-4 py-2.5 shadow-sm hover:shadow-md transition-all duration-200">
               <div className="rounded-lg bg-amber-500/10 p-2 text-amber-600 dark:text-amber-400">
                 <Clock className="h-5 w-5" aria-hidden="true" />
               </div>

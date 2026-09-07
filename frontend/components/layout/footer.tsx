@@ -10,12 +10,12 @@ export function Footer({ className }: FooterProps) {
   return (
     <footer
       className={cn(
-        "border-t border-border bg-muted/30 py-10 mt-auto",
+        "border-t border-border bg-muted/30 py-12 mt-auto",
         className
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-border/40">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-border/60">
           {/* 1. Brand Overview */}
           <div className="space-y-3">
             <Link

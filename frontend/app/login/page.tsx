@@ -89,7 +89,7 @@ function LoginForm() {
 
   return (
     <main className="min-h-screen flex items-center justify-center p-4 bg-background">
-      <Card className="w-full max-w-md shadow-md">
+      <Card className="w-full max-w-md shadow-md border-border/80 rounded-2xl">
         <CardHeader className="text-center space-y-1">
           <CardTitle
             role="heading"

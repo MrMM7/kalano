@@ -12,10 +12,10 @@ export function ProductCard({ product }: ProductCardProps) {
     <article className="h-full">
       <Link
         href={`/products/${id}`}
-        className="group flex h-full flex-col rounded-xl border border-border bg-card p-4 transition-all duration-200 hover:shadow-md hover:border-border/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        className="group flex h-full flex-col rounded-xl border border-border/90 bg-card p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         aria-label={`View details for ${name} by ${brand}`}
       >
-        <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-muted/30 flex items-center justify-center">
+        <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-muted/40 flex items-center justify-center">
           {image_url ? (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
@@ -46,7 +46,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
         <div className="mt-4 flex flex-1 flex-col justify-between">
           <div>
-            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               {brand}
             </p>
             <h3 className="mt-1 text-base font-semibold text-foreground line-clamp-2 leading-snug group-hover:text-primary transition-colors">
@@ -54,11 +54,11 @@ export function ProductCard({ product }: ProductCardProps) {
             </h3>
           </div>
 
-          <div className="mt-4 pt-2 border-t border-border/50 flex items-baseline justify-between">
+          <div className="mt-4 pt-3 border-t border-border/60 flex items-baseline justify-between">
             {cheapest_offer ? (
               <div>
                 <span className="text-xs text-muted-foreground mr-1">From</span>
-                <span className="text-lg font-bold text-foreground">
+                <span className="text-lg font-extrabold text-foreground">
                   ${cheapest_offer.price.toFixed(2)}
                 </span>
               </div>

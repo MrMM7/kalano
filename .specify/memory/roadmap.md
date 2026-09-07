@@ -311,9 +311,9 @@
 
 ---
 
-## [ ] Phase 9: UI/UX Improvements
+## [x] Phase 9: UI/UX Improvements
 
-### [ ] Step 9.1 — Research & synthesize UI/UX best practices
+### [x] Step 9.1 — Research & synthesize UI/UX best practices
 
 - Research online for current UI/UX best practices relevant to e-commerce platforms — covering
   layout patterns, typography, color theory, spacing systems, micro-interactions, navigation UX,
@@ -323,7 +323,7 @@
   pages.
 - This file serves as the design rationale for all changes in the following step.
 
-### [ ] Step 9.2 — Apply UI/UX research to code
+### [x] Step 9.2 — Apply UI/UX research to code
 
 - Using the recommendations from `RESEARCH.md`, systematically improve the frontend:
   - Refine spacing, typography scale, and color palette across all pages.

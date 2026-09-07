@@ -19,7 +19,7 @@ export function OrderCard({ order }: OrderCardProps) {
     <article
       data-testid={`order-card-${order.id}`}
       aria-labelledby={`order-title-${order.id}`}
-      className="rounded-2xl border border-border/80 bg-card p-6 shadow-sm hover:border-border transition-all space-y-4"
+      className="rounded-2xl border border-border/80 bg-card p-6 shadow-sm hover:shadow-md hover:border-border transition-all duration-200 space-y-4"
     >
       {/* Header: ID, Date, Status Badge */}
       <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border/40 pb-4">
