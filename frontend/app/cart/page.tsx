@@ -12,13 +12,13 @@ import { CartItemList } from "@/components/cart/cart-item-list";
 import { CartSummary } from "@/components/cart/cart-summary";
 import { CartEmptyState } from "@/components/cart/cart-empty-state";
 import { CartSkeleton } from "@/components/cart/cart-skeleton";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { ErrorState } from "@/components/ui/error-state";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import {
   AlertCircle,
   ArrowLeft,
-  RefreshCw,
   Store,
   Truck,
 } from "lucide-react";
@@ -147,29 +147,15 @@ export default function CartPage() {
 
         {/* Error State */}
         {!isLoading && isError && (
-          <div
-            role="alert"
-            className="max-w-md mx-auto my-16 p-8 rounded-2xl border border-destructive/20 bg-destructive/5 text-center"
-          >
-            <AlertCircle className="h-10 w-10 text-destructive mx-auto mb-3" />
-            <h2 className="text-lg font-semibold text-foreground">
-              Unable to load your cart
-            </h2>
-            <p className="text-sm text-muted-foreground mt-1 mb-6">
-              {error?.message ||
-                "There was an unexpected error retrieving your cart items."}
-            </p>
-            <Button
-              variant="outline"
-              onClick={() => refetch()}
-              disabled={isFetching}
-              className="gap-2"
-            >
-              <RefreshCw
-                className={`h-4 w-4 ${isFetching ? "animate-spin" : ""}`}
-              />
-              Try Again
-            </Button>
+          <div className="my-16">
+            <ErrorState
+              title="Unable to load your cart"
+              message={
+                error?.message ||
+                "There was an unexpected error retrieving your cart items."
+              }
+              onRetry={() => refetch()}
+            />
           </div>
         )}
 

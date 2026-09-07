@@ -1,3 +1,4 @@
+import { TableSkeleton } from "@/components/ui/table-skeleton";
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -291,14 +292,8 @@ export default function LogisticsPage() {
 
         {/* Loading Skeleton */}
         {isOrdersLoading && (
-          <div
-            className="space-y-4 animate-pulse"
-            data-testid="orders-table-skeleton"
-          >
-            <div className="h-12 bg-muted rounded-xl" />
-            <div className="h-20 bg-muted/50 rounded-xl" />
-            <div className="h-20 bg-muted/50 rounded-xl" />
-            <div className="h-20 bg-muted/50 rounded-xl" />
+          <div data-testid="orders-table-skeleton">
+            <TableSkeleton rows={5} columns={6} />
           </div>
         )}
 

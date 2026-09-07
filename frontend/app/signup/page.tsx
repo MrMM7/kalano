@@ -54,6 +54,7 @@ export default function SignupPage() {
         err?.message ||
         "An unexpected error occurred during registration. Please try again.";
       setApiError(message);
+      toast.error(message);
     },
   });
 
@@ -215,7 +216,7 @@ export default function SignupPage() {
                 id="password"
                 type="password"
                 autoComplete="new-password"
-                placeholder="••••••••"
+                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                 value={password}
                 disabled={registerMutation.isPending}
                 aria-invalid={!!fieldErrors.password}
@@ -248,7 +249,7 @@ export default function SignupPage() {
                 id="confirm_password"
                 type="password"
                 autoComplete="new-password"
-                placeholder="••••••••"
+                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                 value={confirmPassword}
                 disabled={registerMutation.isPending}
                 aria-invalid={!!fieldErrors.confirm_password}

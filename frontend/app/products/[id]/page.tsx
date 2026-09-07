@@ -9,6 +9,7 @@ import { useProductDetail } from "@/lib/hooks/use-product-detail";
 import { SellerOffersTable } from "@/components/seller-offers-table";
 import { ProductDetailSkeleton } from "@/components/product-detail-skeleton";
 import { Button } from "@/components/ui/button";
+import { ErrorState } from "@/components/ui/error-state";
 import { toast } from "sonner";
 import {
   AlertCircle,
@@ -16,7 +17,6 @@ import {
   CheckCircle2,
   Loader2,
   Package,
-  RefreshCw,
   ShoppingCart,
   Truck,
 } from "lucide-react";
@@ -34,7 +34,6 @@ export default function ProductDetailPage() {
     isError,
     error,
     refetch,
-    isFetching,
   } = useProductDetail(productId);
 
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
@@ -132,29 +131,15 @@ export default function ProductDetailPage() {
 
       {/* Generic Error State */}
       {!isLoading && !isNotFound && isError && (
-        <div
-          role="alert"
-          className="max-w-md mx-auto my-20 p-8 rounded-2xl border border-destructive/20 bg-destructive/5 text-center"
-        >
-          <AlertCircle className="h-10 w-10 text-destructive mx-auto mb-3" />
-          <h2 className="text-lg font-semibold text-foreground">
-            Unable to load product
-          </h2>
-          <p className="text-sm text-muted-foreground mt-1 mb-6">
-            {error?.message ||
-              "There was an unexpected error retrieving this item."}
-          </p>
-          <Button
-            variant="outline"
-            onClick={() => refetch()}
-            disabled={isFetching}
-            className="gap-2"
-          >
-            <RefreshCw
-              className={`h-4 w-4 ${isFetching ? "animate-spin" : ""}`}
-            />
-            Try Again
-          </Button>
+        <div className="my-20">
+          <ErrorState
+            title="Unable to load product"
+            message={
+              error?.message ||
+              "There was an unexpected error retrieving this item."
+            }
+            onRetry={() => refetch()}
+          />
         </div>
       )}
 

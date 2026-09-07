@@ -7,6 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Loader2, AlertCircle } from "lucide-react";
 
 import { loginUser } from "@/lib/api/auth";
+import { toast } from "sonner";
 import { loginSchema } from "@/lib/validators/auth";
 import { useAuth } from "@/lib/hooks/use-auth";
 import { Button } from "@/components/ui/button";
@@ -39,6 +40,7 @@ function LoginForm() {
       loginUser(variables),
     onSuccess: async () => {
       await refreshUser();
+      toast.success("Welcome back!");
       const redirectParam = searchParams.get("redirect");
       const target =
         redirectParam &&
@@ -53,6 +55,7 @@ function LoginForm() {
       const message =
         err?.error?.message || err?.message || "Invalid email or password";
       setApiError(message);
+      toast.error(message);
     },
   });
 
@@ -157,7 +160,7 @@ function LoginForm() {
                 id="password"
                 type="password"
                 autoComplete="current-password"
-                placeholder="••••••••"
+                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                 value={password}
                 disabled={loginMutation.isPending}
                 aria-invalid={!!validationErrors.password}
