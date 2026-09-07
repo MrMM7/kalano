@@ -36,7 +36,11 @@ export function ShippingAddressForm({
             htmlFor="shipping-address"
             className="block text-sm font-medium text-foreground"
           >
-            Delivery Destination <span className="text-destructive">*</span>
+            Delivery Address
+            <span className="sr-only"> (Delivery Destination)</span>{" "}
+            <span className="text-destructive" aria-hidden="true">
+              *
+            </span>
           </label>
           <textarea
             id="shipping-address"
@@ -47,12 +51,12 @@ export function ShippingAddressForm({
             placeholder="Street address, apartment, city, state, zip code..."
             aria-required="true"
             aria-invalid={Boolean(error)}
-            aria-describedby={error ? "shipping-address-error" : undefined}
-            className="w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm text-foreground shadow-sm placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 resize-y"
+            aria-describedby={error ? "address-error" : undefined}
+            className="w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm text-foreground shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-y"
           />
           {error && (
             <p
-              id="shipping-address-error"
+              id="address-error"
               role="alert"
               className="text-xs font-medium text-destructive mt-1"
             >
@@ -68,7 +72,7 @@ export function ShippingAddressForm({
             checked={saveAddress}
             onChange={(e) => onSaveAddressChange(e.target.checked)}
             disabled={disabled}
-            className="h-4 w-4 rounded border-input text-primary focus:ring-ring"
+            className="h-4 w-4 rounded border-input text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           />
           <label
             htmlFor="save-address"

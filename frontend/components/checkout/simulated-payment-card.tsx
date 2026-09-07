@@ -38,7 +38,12 @@ export function SimulatedPaymentCard() {
         </div>
 
         {/* Dummy Card Preview */}
-        <div className="rounded-xl border border-border/80 bg-muted/40 p-4 space-y-3">
+        <button
+          type="button"
+          aria-label="Selected Payment Method: Simulated Test Card ending in 4242"
+          aria-pressed="true"
+          className="w-full text-left rounded-xl border border-primary/40 bg-muted/40 p-4 space-y-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all cursor-default"
+        >
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Simulated Card
@@ -54,10 +59,13 @@ export function SimulatedPaymentCard() {
             <span>Expires: 12/28</span>
             <span>CVV: •••</span>
           </div>
-        </div>
+        </button>
 
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+          <ShieldCheck
+            className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0"
+            aria-hidden="true"
+          />
           <span>
             No credit card information is collected or stored on our servers.
           </span>

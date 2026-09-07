@@ -104,11 +104,11 @@ export function CheckoutOrderSummary({
             size="lg"
             onClick={onSubmit}
             disabled={disabled || isSubmitting || cart.items.length === 0}
-            className="w-full text-base font-semibold gap-2"
+            className="w-full text-base font-semibold gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           >
             {isSubmitting ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
                 <span>Processing Order...</span>
               </>
             ) : (
@@ -117,7 +117,10 @@ export function CheckoutOrderSummary({
           </Button>
 
           <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground text-center">
-            <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+            <ShieldCheck
+              className="h-4 w-4 text-emerald-600 dark:text-emerald-400"
+              aria-hidden="true"
+            />
             <span>Simulated transaction • No real charges</span>
           </div>
         </div>

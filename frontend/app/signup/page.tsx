@@ -155,7 +155,11 @@ export default function SignupPage() {
                 placeholder="e.g. Jane Doe"
                 value={displayName}
                 disabled={registerMutation.isPending}
-                aria-invalid={!!fieldErrors.display_name}
+                aria-invalid={Boolean(fieldErrors.display_name)}
+                aria-describedby={
+                  fieldErrors.display_name ? "display_name-error" : undefined
+                }
+                className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 onChange={(e) => {
                   setDisplayName(e.target.value);
                   if (fieldErrors.display_name) {
@@ -168,7 +172,11 @@ export default function SignupPage() {
                 }}
               />
               {fieldErrors.display_name && (
-                <p className="text-xs text-destructive">
+                <p
+                  id="display_name-error"
+                  role="alert"
+                  className="text-xs text-destructive"
+                >
                   {fieldErrors.display_name}
                 </p>
               )}
@@ -188,7 +196,9 @@ export default function SignupPage() {
                 placeholder="name@example.com"
                 value={email}
                 disabled={registerMutation.isPending}
-                aria-invalid={!!fieldErrors.email}
+                aria-invalid={Boolean(fieldErrors.email)}
+                aria-describedby={fieldErrors.email ? "email-error" : undefined}
+                className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 onChange={(e) => {
                   setEmail(e.target.value);
                   if (fieldErrors.email) {
@@ -201,7 +211,13 @@ export default function SignupPage() {
                 }}
               />
               {fieldErrors.email && (
-                <p className="text-xs text-destructive">{fieldErrors.email}</p>
+                <p
+                  id="email-error"
+                  role="alert"
+                  className="text-xs text-destructive"
+                >
+                  {fieldErrors.email}
+                </p>
               )}
             </div>
 
@@ -216,10 +232,14 @@ export default function SignupPage() {
                 id="password"
                 type="password"
                 autoComplete="new-password"
-                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                placeholder="••••••••"
                 value={password}
                 disabled={registerMutation.isPending}
-                aria-invalid={!!fieldErrors.password}
+                aria-invalid={Boolean(fieldErrors.password)}
+                aria-describedby={
+                  fieldErrors.password ? "password-error" : undefined
+                }
+                className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 onChange={(e) => {
                   setPassword(e.target.value);
                   if (fieldErrors.password) {
@@ -232,7 +252,11 @@ export default function SignupPage() {
                 }}
               />
               {fieldErrors.password && (
-                <p className="text-xs text-destructive">
+                <p
+                  id="password-error"
+                  role="alert"
+                  className="text-xs text-destructive"
+                >
                   {fieldErrors.password}
                 </p>
               )}
@@ -249,10 +273,16 @@ export default function SignupPage() {
                 id="confirm_password"
                 type="password"
                 autoComplete="new-password"
-                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                placeholder="••••••••"
                 value={confirmPassword}
                 disabled={registerMutation.isPending}
-                aria-invalid={!!fieldErrors.confirm_password}
+                aria-invalid={Boolean(fieldErrors.confirm_password)}
+                aria-describedby={
+                  fieldErrors.confirm_password
+                    ? "confirm_password-error"
+                    : undefined
+                }
+                className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 onChange={(e) => {
                   setConfirmPassword(e.target.value);
                   if (fieldErrors.confirm_password) {
@@ -265,7 +295,11 @@ export default function SignupPage() {
                 }}
               />
               {fieldErrors.confirm_password && (
-                <p className="text-xs text-destructive">
+                <p
+                  id="confirm_password-error"
+                  role="alert"
+                  className="text-xs text-destructive"
+                >
                   {fieldErrors.confirm_password}
                 </p>
               )}
@@ -274,12 +308,15 @@ export default function SignupPage() {
             <Button
               type="submit"
               disabled={registerMutation.isPending}
-              className="w-full mt-2"
+              className="w-full mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               size="lg"
             >
               {registerMutation.isPending ? (
                 <>
-                  <Loader2 className="size-4 animate-spin mr-2" />
+                  <Loader2
+                    className="size-4 animate-spin mr-2"
+                    aria-hidden="true"
+                  />
                   Creating account...
                 </>
               ) : (
@@ -294,7 +331,7 @@ export default function SignupPage() {
             Already have an account?{" "}
             <Link
               href="/login"
-              className="font-medium text-primary hover:underline underline-offset-4"
+              className="font-medium text-primary hover:underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-sm"
             >
               Log in
             </Link>

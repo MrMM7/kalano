@@ -130,7 +130,11 @@ function LoginForm() {
                 placeholder="name@example.com"
                 value={email}
                 disabled={loginMutation.isPending}
-                aria-invalid={!!validationErrors.email}
+                aria-invalid={Boolean(validationErrors.email)}
+                aria-describedby={
+                  validationErrors.email ? "email-error" : undefined
+                }
+                className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 onChange={(e) => {
                   setEmail(e.target.value);
                   if (validationErrors.email) {
@@ -143,7 +147,11 @@ function LoginForm() {
                 }}
               />
               {validationErrors.email && (
-                <p className="text-xs text-destructive">
+                <p
+                  id="email-error"
+                  role="alert"
+                  className="text-xs text-destructive"
+                >
                   {validationErrors.email}
                 </p>
               )}
@@ -160,10 +168,14 @@ function LoginForm() {
                 id="password"
                 type="password"
                 autoComplete="current-password"
-                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                placeholder="••••••••"
                 value={password}
                 disabled={loginMutation.isPending}
-                aria-invalid={!!validationErrors.password}
+                aria-invalid={Boolean(validationErrors.password)}
+                aria-describedby={
+                  validationErrors.password ? "password-error" : undefined
+                }
+                className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 onChange={(e) => {
                   setPassword(e.target.value);
                   if (validationErrors.password) {
@@ -176,7 +188,11 @@ function LoginForm() {
                 }}
               />
               {validationErrors.password && (
-                <p className="text-xs text-destructive">
+                <p
+                  id="password-error"
+                  role="alert"
+                  className="text-xs text-destructive"
+                >
                   {validationErrors.password}
                 </p>
               )}
@@ -185,12 +201,15 @@ function LoginForm() {
             <Button
               type="submit"
               disabled={loginMutation.isPending}
-              className="w-full mt-2"
+              className="w-full mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               size="lg"
             >
               {loginMutation.isPending ? (
                 <>
-                  <Loader2 className="size-4 animate-spin mr-2" />
+                  <Loader2
+                    className="size-4 animate-spin mr-2"
+                    aria-hidden="true"
+                  />
                   Signing in...
                 </>
               ) : (
@@ -205,7 +224,7 @@ function LoginForm() {
             Don&apos;t have an account?{" "}
             <Link
               href="/signup"
-              className="font-medium text-primary hover:underline underline-offset-4"
+              className="font-medium text-primary hover:underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-sm"
             >
               Sign up
             </Link>

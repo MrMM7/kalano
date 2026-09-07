@@ -111,18 +111,23 @@ export default function CheckoutPage() {
           aria-label="Breadcrumb"
           className="mb-8 flex items-center gap-2 text-sm text-muted-foreground"
         >
-          <Link href="/" className="hover:text-foreground transition-colors">
+          <Link
+            href="/"
+            className="hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-sm"
+          >
             Home
           </Link>
-          <span>/</span>
+          <span aria-hidden="true">/</span>
           <Link
             href="/cart"
-            className="hover:text-foreground transition-colors"
+            className="hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-sm"
           >
             Shopping Cart
           </Link>
-          <span>/</span>
-          <span className="text-foreground font-medium">Checkout</span>
+          <span aria-hidden="true">/</span>
+          <span className="text-foreground font-medium" aria-current="page">
+            Checkout
+          </span>
         </nav>
 
         {/* Non-buyer Role Banner */}
@@ -133,7 +138,10 @@ export default function CheckoutPage() {
             className="mb-8 p-6 rounded-2xl border border-amber-500/30 bg-amber-500/10 text-foreground"
           >
             <div className="flex items-start gap-4">
-              <AlertCircle className="h-6 w-6 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+              <AlertCircle
+                className="h-6 w-6 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5"
+                aria-hidden="true"
+              />
               <div className="space-y-2">
                 <h2 className="text-base font-semibold">
                   Checkout is reserved for Buyer accounts
@@ -150,10 +158,10 @@ export default function CheckoutPage() {
                       href="/dashboard"
                       className={cn(
                         buttonVariants({ variant: "outline", size: "sm" }),
-                        "gap-2"
+                        "gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                       )}
                     >
-                      <Store className="h-4 w-4" />
+                      <Store className="h-4 w-4" aria-hidden="true" />
                       <span>Go to Merchant Dashboard</span>
                     </Link>
                   )}
@@ -162,10 +170,10 @@ export default function CheckoutPage() {
                       href="/logistics"
                       className={cn(
                         buttonVariants({ variant: "outline", size: "sm" }),
-                        "gap-2"
+                        "gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                       )}
                     >
-                      <Truck className="h-4 w-4" />
+                      <Truck className="h-4 w-4" aria-hidden="true" />
                       <span>Go to Logistics Dashboard</span>
                     </Link>
                   )}
@@ -185,7 +193,10 @@ export default function CheckoutPage() {
             className="rounded-2xl border border-dashed border-border bg-card p-12 text-center max-w-xl mx-auto my-12"
           >
             <div className="rounded-full bg-muted/60 p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-              <ShoppingCart className="h-8 w-8 text-muted-foreground" />
+              <ShoppingCart
+                className="h-8 w-8 text-muted-foreground"
+                aria-hidden="true"
+              />
             </div>
             <h2 className="text-2xl font-bold tracking-tight text-foreground">
               Your cart is empty
@@ -197,7 +208,10 @@ export default function CheckoutPage() {
             <div className="mt-6">
               <Link
                 href="/products"
-                className={cn(buttonVariants({ size: "lg" }), "gap-2")}
+                className={cn(
+                  buttonVariants({ size: "lg" }),
+                  "gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                )}
               >
                 <span>Continue Shopping</span>
               </Link>
@@ -215,7 +229,7 @@ export default function CheckoutPage() {
                 data-testid="checkout-error-banner"
                 className="p-4 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive flex items-center gap-3"
               >
-                <AlertCircle className="h-5 w-5 shrink-0" />
+                <AlertCircle className="h-5 w-5 shrink-0" aria-hidden="true" />
                 <p className="text-sm font-medium">{serverError}</p>
               </div>
             )}
@@ -239,10 +253,10 @@ export default function CheckoutPage() {
                     href="/cart"
                     className={cn(
                       buttonVariants({ variant: "ghost" }),
-                      "gap-2 text-sm text-muted-foreground hover:text-foreground"
+                      "gap-2 text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                     )}
                   >
-                    <ArrowLeft className="h-4 w-4" />
+                    <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                     <span>Return to Shopping Cart</span>
                   </Link>
                 </div>
