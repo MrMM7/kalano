@@ -199,13 +199,12 @@ export function LogisticsTable({
   };
 
   return (
-    <div className="w-full overflow-hidden rounded-xl border border-border bg-card shadow-sm">
-      <div className="overflow-x-auto">
-        <table
-          className="w-full text-left text-sm"
-          role="table"
-          aria-label="Logistics orders table"
-        >
+    <div className="w-full overflow-x-auto rounded-lg border border-border bg-card shadow-sm">
+      <table
+        className="w-full min-w-[640px] text-left text-sm"
+        role="table"
+        aria-label="Logistics orders table"
+      >
           <thead className="border-b border-border bg-muted/40 text-xs uppercase text-muted-foreground">
             <tr>
               <th
@@ -401,6 +400,5 @@ export function LogisticsTable({
           </tbody>
         </table>
       </div>
-    </div>
-  );
+    );
 }

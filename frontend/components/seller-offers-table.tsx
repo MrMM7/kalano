@@ -22,13 +22,12 @@ export function SellerOffersTable({
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
-      <div className="overflow-x-auto">
-        <table
-          className="w-full text-left text-sm"
-          role="table"
-          aria-label="Seller offers comparison table"
-        >
+    <div className="w-full overflow-x-auto rounded-lg border border-border bg-card shadow-sm">
+      <table
+        className="w-full min-w-[600px] text-left text-sm"
+        role="table"
+        aria-label="Seller offers comparison table"
+      >
           <thead className="border-b border-border bg-muted/40 text-xs uppercase text-muted-foreground">
             <tr>
               <th scope="col" className="px-6 py-3 font-medium">
@@ -117,6 +116,5 @@ export function SellerOffersTable({
           </tbody>
         </table>
       </div>
-    </div>
-  );
+    );
 }

@@ -116,9 +116,9 @@ export function MyOffersTab({ onNavigateToAddOffer }: MyOffersTabProps) {
         )}
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-border bg-card">
+      <div className="w-full overflow-x-auto rounded-lg border border-border bg-card">
         <table
-          className="w-full text-left border-collapse"
+          className="w-full min-w-[600px] text-left border-collapse"
           data-testid="offers-table"
           aria-label="Merchant offers table"
         >
