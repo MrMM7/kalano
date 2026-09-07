@@ -87,27 +87,33 @@ export async function updateMerchantOffer(
   offerId: string,
   payload: UpdateOfferPayload
 ): Promise<MerchantOfferResponse> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/dashboard/offers/${offerId}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify(payload),
-  });
+  const res = await fetch(
+    `${API_BASE_URL}/api/v1/dashboard/offers/${offerId}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(payload),
+    }
+  );
   return handleResponse<MerchantOfferResponse>(res);
 }
 
 export async function deleteMerchantOffer(
   offerId: string
 ): Promise<MerchantOfferDeleteResponse> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/dashboard/offers/${offerId}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
+  const res = await fetch(
+    `${API_BASE_URL}/api/v1/dashboard/offers/${offerId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }
+  );
   return handleResponse<MerchantOfferDeleteResponse>(res);
 }
 

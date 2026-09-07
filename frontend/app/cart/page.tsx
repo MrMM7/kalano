@@ -16,23 +16,11 @@ import { buttonVariants } from "@/components/ui/button";
 import { ErrorState } from "@/components/ui/error-state";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import {
-  AlertCircle,
-  ArrowLeft,
-  Store,
-  Truck,
-} from "lucide-react";
+import { AlertCircle, ArrowLeft, Store, Truck } from "lucide-react";
 
 export default function CartPage() {
   const { user } = useAuth();
-  const {
-    data: cart,
-    isLoading,
-    isError,
-    error,
-    refetch,
-    isFetching,
-  } = useCart();
+  const { data: cart, isLoading, isError, error, refetch } = useCart();
   const updateMutation = useUpdateCartItem();
   const deleteMutation = useDeleteCartItem();
 
@@ -88,7 +76,7 @@ export default function CartPage() {
           <Link href="/" className="hover:text-foreground transition-colors">
             Home
           </Link>
-          <span>/</span>
+          <span aria-hidden="true">/</span>
           <span className="text-foreground font-medium">Shopping Cart</span>
         </nav>
 
@@ -100,7 +88,10 @@ export default function CartPage() {
             className="mb-8 p-6 rounded-2xl border border-amber-500/30 bg-amber-500/10 text-foreground"
           >
             <div className="flex items-start gap-4">
-              <AlertCircle className="h-6 w-6 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+              <AlertCircle
+                className="h-6 w-6 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5"
+                aria-hidden="true"
+              />
               <div className="space-y-2">
                 <h2 className="text-base font-semibold">
                   Carts are reserved for Buyer accounts
@@ -120,7 +111,7 @@ export default function CartPage() {
                         "gap-2"
                       )}
                     >
-                      <Store className="h-4 w-4" />
+                      <Store className="h-4 w-4" aria-hidden="true" />
                       <span>Go to Merchant Dashboard</span>
                     </Link>
                   )}
@@ -132,7 +123,7 @@ export default function CartPage() {
                         "gap-2"
                       )}
                     >
-                      <Truck className="h-4 w-4" />
+                      <Truck className="h-4 w-4" aria-hidden="true" />
                       <span>Go to Logistics Dashboard</span>
                     </Link>
                   )}
@@ -184,7 +175,7 @@ export default function CartPage() {
                     "gap-2 text-sm text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  <ArrowLeft className="h-4 w-4" />
+                  <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                   <span>Continue Shopping</span>
                 </Link>
               </div>

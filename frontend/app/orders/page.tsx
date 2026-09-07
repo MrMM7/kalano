@@ -1,4 +1,4 @@
-ï»¿"use client";
+"use client";
 
 import Link from "next/link";
 import { useAuth } from "@/lib/hooks/use-auth";
@@ -8,13 +8,7 @@ import { OrdersEmptyState } from "@/components/orders/orders-empty-state";
 import { OrdersSkeleton } from "@/components/orders/orders-skeleton";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import {
-  AlertCircle,
-  Clock,
-  RotateCw,
-  Store,
-  Truck,
-} from "lucide-react";
+import { AlertCircle, Clock, RotateCw, Store, Truck } from "lucide-react";
 
 export default function OrderHistoryPage() {
   const { user } = useAuth();
@@ -34,7 +28,7 @@ export default function OrderHistoryPage() {
           <Link href="/" className="hover:text-foreground transition-colors">
             Home
           </Link>
-          <span>/</span>
+          <span aria-hidden="true">/</span>
           <span className="text-foreground font-medium">Order History</span>
         </nav>
 
@@ -50,7 +44,7 @@ export default function OrderHistoryPage() {
           </div>
           {!isLoading && !isError && orders.length > 0 && (
             <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 border border-border/60 rounded-full px-4 py-1.5 self-start sm:self-auto">
-              <Clock className="h-4 w-4 text-primary" />
+              <Clock className="h-4 w-4 text-primary" aria-hidden="true" />
               <span>
                 {totalOrders} {totalOrders === 1 ? "order" : "orders"} placed
               </span>
@@ -66,7 +60,10 @@ export default function OrderHistoryPage() {
             className="mb-8 p-6 rounded-2xl border border-amber-500/30 bg-amber-500/10 text-foreground"
           >
             <div className="flex items-start gap-4">
-              <AlertCircle className="h-6 w-6 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+              <AlertCircle
+                className="h-6 w-6 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5"
+                aria-hidden="true"
+              />
               <div className="space-y-2">
                 <h2 className="text-base font-semibold">
                   Order history is designed for Buyer accounts
@@ -86,7 +83,7 @@ export default function OrderHistoryPage() {
                         "gap-2"
                       )}
                     >
-                      <Store className="h-4 w-4" />
+                      <Store className="h-4 w-4" aria-hidden="true" />
                       <span>Go to Merchant Dashboard</span>
                     </Link>
                   )}
@@ -98,7 +95,7 @@ export default function OrderHistoryPage() {
                         "gap-2"
                       )}
                     >
-                      <Truck className="h-4 w-4" />
+                      <Truck className="h-4 w-4" aria-hidden="true" />
                       <span>Go to Logistics Dashboard</span>
                     </Link>
                   )}
@@ -119,7 +116,7 @@ export default function OrderHistoryPage() {
             className="rounded-2xl border border-destructive/30 bg-destructive/10 p-8 text-center max-w-xl mx-auto my-8 space-y-4"
           >
             <div className="rounded-full bg-destructive/20 p-3 w-12 h-12 mx-auto flex items-center justify-center text-destructive">
-              <AlertCircle className="h-6 w-6" />
+              <AlertCircle className="h-6 w-6" aria-hidden="true" />
             </div>
             <div>
               <h2 className="text-lg font-bold text-foreground">
@@ -136,7 +133,7 @@ export default function OrderHistoryPage() {
                 onClick={() => refetch()}
                 className="gap-2 border-destructive/30 hover:bg-destructive/20"
               >
-                <RotateCw className="h-4 w-4" />
+                <RotateCw className="h-4 w-4" aria-hidden="true" />
                 <span>Try Again</span>
               </Button>
             </div>

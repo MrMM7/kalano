@@ -24,7 +24,11 @@ export function SellerOffersTable({
   return (
     <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm" role="table">
+        <table
+          className="w-full text-left text-sm"
+          role="table"
+          aria-label="Seller offers comparison table"
+        >
           <thead className="border-b border-border bg-muted/40 text-xs uppercase text-muted-foreground">
             <tr>
               <th scope="col" className="px-6 py-3 font-medium">
@@ -65,7 +69,8 @@ export function SellerOffersTable({
                       <span>{offer.seller_name}</span>
                       {isSelected && (
                         <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary font-medium">
-                          <Check className="h-3 w-3" /> Selected
+                          <Check className="h-3 w-3" aria-hidden="true" />{" "}
+                          Selected
                         </span>
                       )}
                     </div>
@@ -75,7 +80,10 @@ export function SellerOffersTable({
                   </td>
                   <td className="px-6 py-4 text-muted-foreground">
                     <span className="inline-flex items-center gap-1">
-                      <Truck className="h-3.5 w-3.5 text-muted-foreground/70" />
+                      <Truck
+                        className="h-3.5 w-3.5 text-muted-foreground/70"
+                        aria-hidden="true"
+                      />
                       {offer.estimated_delivery_days != null
                         ? `${offer.estimated_delivery_days} days`
                         : "Standard delivery"}
@@ -98,7 +106,7 @@ export function SellerOffersTable({
                       variant={isSelected ? "secondary" : "outline"}
                       disabled={isOutOfStock || isSelected}
                       onClick={() => onSelectOffer(offer.seller_product_id)}
-                      aria-label={`Select offer from ${offer.seller_name} at $${offer.price.toFixed(2)}`}
+                      aria-label={`Select offer from ${offer.seller_name} for $${offer.price.toFixed(2)}`}
                     >
                       {isSelected ? "Selected" : "Select Offer"}
                     </Button>

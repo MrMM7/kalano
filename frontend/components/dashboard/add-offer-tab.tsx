@@ -3,7 +3,10 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useProducts } from "@/lib/hooks/use-products";
-import { useCreateOffer, useCreateProductAndOffer } from "@/lib/hooks/use-dashboard";
+import {
+  useCreateOffer,
+  useCreateProductAndOffer,
+} from "@/lib/hooks/use-dashboard";
 import { ProductListItem } from "@/types/product";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,7 +28,8 @@ interface AddOfferTabProps {
 export function AddOfferTab({ onOfferAdded }: AddOfferTabProps) {
   const [activeMode, setActiveMode] = useState<"catalog" | "new">("catalog");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedProduct, setSelectedProduct] = useState<ProductListItem | null>(null);
+  const [selectedProduct, setSelectedProduct] =
+    useState<ProductListItem | null>(null);
 
   // Existing product offer form state
   const [offerPrice, setOfferPrice] = useState("");
@@ -60,7 +64,9 @@ export function AddOfferTab({ onOfferAdded }: AddOfferTabProps) {
 
     const price = parseFloat(offerPrice);
     const stock = parseInt(offerStock, 10);
-    const delivery = offerDeliveryDays.trim() ? parseInt(offerDeliveryDays, 10) : null;
+    const delivery = offerDeliveryDays.trim()
+      ? parseInt(offerDeliveryDays, 10)
+      : null;
 
     if (isNaN(price) || price <= 0) {
       setOfferError("Price must be a valid number strictly greater than 0.");
@@ -115,10 +121,14 @@ export function AddOfferTab({ onOfferAdded }: AddOfferTabProps) {
 
     const price = parseFloat(newPrice);
     const stock = parseInt(newStock, 10);
-    const delivery = newDeliveryDays.trim() ? parseInt(newDeliveryDays, 10) : null;
+    const delivery = newDeliveryDays.trim()
+      ? parseInt(newDeliveryDays, 10)
+      : null;
 
     if (isNaN(price) || price <= 0) {
-      setNewProductError("Price must be a valid number strictly greater than 0.");
+      setNewProductError(
+        "Price must be a valid number strictly greater than 0."
+      );
       return;
     }
     if (isNaN(stock) || stock < 0) {
@@ -162,31 +172,42 @@ export function AddOfferTab({ onOfferAdded }: AddOfferTabProps) {
   const searchResults = productsData?.items ?? [];
 
   return (
-    <div className="space-y-8 max-w-4xl mx-auto" data-testid="add-offer-container">
+    <div
+      className="space-y-8 max-w-4xl mx-auto"
+      data-testid="add-offer-container"
+    >
       {/* Mode switcher tabs */}
-      <div className="flex border-b border-border">
+      <div
+        className="flex border-b border-border"
+        role="tablist"
+        aria-label="Offer creation mode"
+      >
         <button
           type="button"
+          role="tab"
+          aria-selected={activeMode === "catalog"}
           onClick={() => setActiveMode("catalog")}
-          className={`px-6 py-3 text-sm font-semibold border-b-2 transition-colors flex items-center gap-2 ${
+          className={`px-6 py-3 text-sm font-semibold border-b-2 transition-colors flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
             activeMode === "catalog"
               ? "border-primary text-primary"
               : "border-transparent text-muted-foreground hover:text-foreground"
           }`}
         >
-          <Search className="h-4 w-4" />
+          <Search className="h-4 w-4" aria-hidden="true" />
           <span>Search Catalog & Add Offer</span>
         </button>
         <button
           type="button"
+          role="tab"
+          aria-selected={activeMode === "new"}
           onClick={() => setActiveMode("new")}
-          className={`px-6 py-3 text-sm font-semibold border-b-2 transition-colors flex items-center gap-2 ${
+          className={`px-6 py-3 text-sm font-semibold border-b-2 transition-colors flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
             activeMode === "new"
               ? "border-primary text-primary"
               : "border-transparent text-muted-foreground hover:text-foreground"
           }`}
         >
-          <Sparkles className="h-4 w-4" />
+          <Sparkles className="h-4 w-4" aria-hidden="true" />
           <span>Create Brand New Product</span>
         </button>
       </div>
@@ -199,8 +220,8 @@ export function AddOfferTab({ onOfferAdded }: AddOfferTabProps) {
               Search Catalog for an Existing Product
             </h3>
             <p className="text-sm text-muted-foreground">
-              Find an existing product in Kalano&apos;s catalog to list your competitive
-              pricing and available stock.
+              Find an existing product in Kalano&apos;s catalog to list your
+              competitive pricing and available stock.
             </p>
 
             <div className="relative mt-2">
@@ -225,23 +246,27 @@ export function AddOfferTab({ onOfferAdded }: AddOfferTabProps) {
             </div>
           )}
 
-          {!isSearching && searchResults.length === 0 && searchQuery.trim() !== "" && (
-            <div className="rounded-xl border border-dashed border-border p-8 text-center space-y-3">
-              <Package className="h-8 w-8 text-muted-foreground mx-auto" />
-              <p className="text-sm text-muted-foreground">
-                No products found matching &ldquo;{searchQuery}&rdquo;.
-              </p>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setActiveMode("new")}
-                className="gap-1.5"
-              >
-                <Plus className="h-3.5 w-3.5" />
-                <span>Create &ldquo;{searchQuery}&rdquo; as a new product</span>
-              </Button>
-            </div>
-          )}
+          {!isSearching &&
+            searchResults.length === 0 &&
+            searchQuery.trim() !== "" && (
+              <div className="rounded-xl border border-dashed border-border p-8 text-center space-y-3">
+                <Package className="h-8 w-8 text-muted-foreground mx-auto" />
+                <p className="text-sm text-muted-foreground">
+                  No products found matching &ldquo;{searchQuery}&rdquo;.
+                </p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setActiveMode("new")}
+                  className="gap-1.5"
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>
+                    Create &ldquo;{searchQuery}&rdquo; as a new product
+                  </span>
+                </Button>
+              </div>
+            )}
 
           {!isSearching && searchResults.length > 0 && (
             <div className="space-y-3" data-testid="catalog-results-list">
@@ -268,7 +293,9 @@ export function AddOfferTab({ onOfferAdded }: AddOfferTabProps) {
                       <h4 className="font-semibold text-foreground text-sm">
                         {product.name}
                       </h4>
-                      <p className="text-xs text-muted-foreground">{product.brand}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {product.brand}
+                      </p>
                       {product.cheapest_offer && (
                         <p className="text-xs text-muted-foreground mt-0.5">
                           Current lowest price:{" "}
@@ -286,9 +313,10 @@ export function AddOfferTab({ onOfferAdded }: AddOfferTabProps) {
                       setSelectedProduct(product);
                       setOfferError(null);
                     }}
+                    aria-label={`Add offer for ${product.name}`}
                     className="gap-1.5 shrink-0"
                   >
-                    <Plus className="h-4 w-4" />
+                    <Plus className="h-4 w-4" aria-hidden="true" />
                     <span>Add Offer</span>
                   </Button>
                 </div>
@@ -320,7 +348,9 @@ export function AddOfferTab({ onOfferAdded }: AddOfferTabProps) {
                 </h2>
                 <p className="mt-1 text-sm text-muted-foreground">
                   Listing offer for{" "}
-                  <strong className="text-foreground">{selectedProduct.name}</strong>{" "}
+                  <strong className="text-foreground">
+                    {selectedProduct.name}
+                  </strong>{" "}
                   ({selectedProduct.brand}).
                 </p>
 
@@ -363,7 +393,8 @@ export function AddOfferTab({ onOfferAdded }: AddOfferTabProps) {
                       htmlFor="offer-stock"
                       className="block text-sm font-medium text-foreground mb-1"
                     >
-                      Available Stock <span className="text-destructive">*</span>
+                      Available Stock{" "}
+                      <span className="text-destructive">*</span>
                     </label>
                     <Input
                       id="offer-stock"
@@ -435,8 +466,9 @@ export function AddOfferTab({ onOfferAdded }: AddOfferTabProps) {
               Create New Catalog Product & Initial Offer
             </h3>
             <p className="text-sm text-muted-foreground">
-              If your product is not yet listed in Kalano&apos;s catalog, fill out the
-              details below to create both the catalog entry and your seller offer.
+              If your product is not yet listed in Kalano&apos;s catalog, fill
+              out the details below to create both the catalog entry and your
+              seller offer.
             </p>
           </div>
 
@@ -479,7 +511,8 @@ export function AddOfferTab({ onOfferAdded }: AddOfferTabProps) {
                   htmlFor="new-product-brand"
                   className="block text-sm font-medium text-foreground mb-1"
                 >
-                  Brand / Manufacturer <span className="text-destructive">*</span>
+                  Brand / Manufacturer{" "}
+                  <span className="text-destructive">*</span>
                 </label>
                 <Input
                   id="new-product-brand"
@@ -598,7 +631,8 @@ export function AddOfferTab({ onOfferAdded }: AddOfferTabProps) {
                 className="cursor-pointer file:cursor-pointer"
               />
               <p className="text-xs text-muted-foreground mt-1">
-                Upload JPG, PNG, or WebP image files (stored in Supabase products bucket).
+                Upload JPG, PNG, or WebP image files (stored in Supabase
+                products bucket).
               </p>
             </div>
 

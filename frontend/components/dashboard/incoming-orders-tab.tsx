@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useMerchantOrders, useUpdateOrderStatus } from "@/lib/hooks/use-dashboard";
+import {
+  useMerchantOrders,
+  useUpdateOrderStatus,
+} from "@/lib/hooks/use-dashboard";
 import { OrderStatusBadge } from "@/components/orders/order-status-badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -63,20 +66,26 @@ export function IncomingOrdersTab() {
         <div>
           <h2 className="text-xl font-bold text-foreground">Incoming Orders</h2>
           <p className="text-sm text-muted-foreground">
-            View orders placed for your products and prepare items for courier pickup
+            View orders placed for your products and prepare items for courier
+            pickup
           </p>
         </div>
 
         {/* Filter Pills */}
-        <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filter orders by status">
+        <div
+          className="flex flex-wrap items-center gap-2"
+          role="group"
+          aria-label="Filter orders by status"
+        >
           {FILTER_OPTIONS.map((filter) => (
             <button
               key={filter.id}
               type="button"
               data-testid={`status-filter-${filter.id}`}
+              aria-pressed={selectedFilter === filter.id}
               onClick={() => setSelectedFilter(filter.id)}
               className={cn(
-                "px-3 py-1.5 rounded-full text-xs font-medium border transition-colors",
+                "px-3 py-1.5 rounded-full text-xs font-medium border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
                 selectedFilter === filter.id
                   ? "bg-primary text-primary-foreground border-primary"
                   : "bg-muted/40 text-muted-foreground border-border hover:text-foreground hover:bg-muted"
@@ -105,7 +114,7 @@ export function IncomingOrdersTab() {
           className="rounded-2xl border border-destructive/30 bg-destructive/10 p-8 text-center max-w-xl mx-auto my-8 space-y-4"
         >
           <div className="rounded-full bg-destructive/20 p-3 w-12 h-12 mx-auto flex items-center justify-center text-destructive">
-            <AlertCircle className="h-6 w-6" />
+            <AlertCircle className="h-6 w-6" aria-hidden="true" />
           </div>
           <div>
             <h2 className="text-lg font-bold text-foreground">
@@ -121,7 +130,7 @@ export function IncomingOrdersTab() {
             onClick={() => refetch()}
             className="gap-2 border-destructive/30 hover:bg-destructive/20"
           >
-            <RotateCw className="h-4 w-4" />
+            <RotateCw className="h-4 w-4" aria-hidden="true" />
             <span>Try Again</span>
           </Button>
         </div>
@@ -134,11 +143,9 @@ export function IncomingOrdersTab() {
           className="rounded-2xl border border-dashed border-border bg-card/50 p-12 text-center max-w-xl mx-auto my-8 space-y-3"
         >
           <div className="rounded-full bg-primary/10 p-4 w-16 h-16 mx-auto flex items-center justify-center text-primary">
-            <Inbox className="h-8 w-8" />
+            <Inbox className="h-8 w-8" aria-hidden="true" />
           </div>
-          <h3 className="text-lg font-bold text-foreground">
-            No Orders Found
-          </h3>
+          <h3 className="text-lg font-bold text-foreground">No Orders Found</h3>
           <p className="text-sm text-muted-foreground max-w-md mx-auto">
             {selectedFilter === "all"
               ? "No customer orders have been received yet. Once buyers order your products, they will show up here."
@@ -170,8 +177,10 @@ export function IncomingOrdersTab() {
                   </div>
                   {order.created_at && (
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <Calendar className="h-3.5 w-3.5" />
-                      <span>{new Date(order.created_at).toLocaleDateString()}</span>
+                      <Calendar className="h-3.5 w-3.5" aria-hidden="true" />
+                      <span>
+                        {new Date(order.created_at).toLocaleDateString()}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -190,17 +199,28 @@ export function IncomingOrdersTab() {
                           className="object-cover"
                         />
                       ) : (
-                        <Package className="h-7 w-7 text-muted-foreground" />
+                        <Package
+                          className="h-7 w-7 text-muted-foreground"
+                          aria-hidden="true"
+                        />
                       )}
                     </div>
                     <div>
                       <h4 className="font-semibold text-foreground text-sm">
                         {order.product_name}
                       </h4>
-                      <p className="text-xs text-muted-foreground">{order.product_brand}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {order.product_brand}
+                      </p>
                       <p className="text-xs text-muted-foreground mt-1">
-                        Qty: <strong className="text-foreground">{order.quantity}</strong> × ${order.bought_price.toFixed(2)} ={" "}
-                        <strong className="text-foreground">${order.total_price.toFixed(2)}</strong>
+                        Qty:{" "}
+                        <strong className="text-foreground">
+                          {order.quantity}
+                        </strong>{" "}
+                        × ${order.bought_price.toFixed(2)} ={" "}
+                        <strong className="text-foreground">
+                          ${order.total_price.toFixed(2)}
+                        </strong>
                       </p>
                     </div>
                   </div>
@@ -208,11 +228,19 @@ export function IncomingOrdersTab() {
                   {/* Buyer & Shipping Address */}
                   <div className="space-y-1.5 text-xs bg-muted/40 p-3 rounded-xl border border-border/40">
                     <div className="flex items-center gap-1.5 text-foreground font-medium">
-                      <User className="h-3.5 w-3.5 text-muted-foreground" />
-                      <span>Buyer: {order.buyer_name || "Anonymous Buyer"}</span>
+                      <User
+                        className="h-3.5 w-3.5 text-muted-foreground"
+                        aria-hidden="true"
+                      />
+                      <span>
+                        Buyer: {order.buyer_name || "Anonymous Buyer"}
+                      </span>
                     </div>
                     <div className="flex items-start gap-1.5 text-muted-foreground">
-                      <MapPin className="h-3.5 w-3.5 shrink-0 mt-0.5" />
+                      <MapPin
+                        className="h-3.5 w-3.5 shrink-0 mt-0.5"
+                        aria-hidden="true"
+                      />
                       <span className="line-clamp-2">{order.address}</span>
                     </div>
                   </div>
@@ -226,12 +254,16 @@ export function IncomingOrdersTab() {
                       data-testid={`ready-for-pickup-button-${order.id}`}
                       onClick={() => handleMarkReadyForPickup(order.id)}
                       disabled={isUpdating}
+                      aria-label={`Mark order #${order.id} ready for pickup`}
                       className="gap-2 bg-blue-600 hover:bg-blue-700 text-white"
                     >
                       {isUpdating ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <Loader2
+                          className="h-4 w-4 animate-spin"
+                          aria-hidden="true"
+                        />
                       ) : (
-                        <CheckCircle2 className="h-4 w-4" />
+                        <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
                       )}
                       <span>Ready for Pickup</span>
                     </Button>

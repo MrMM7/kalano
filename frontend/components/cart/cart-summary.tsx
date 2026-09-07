@@ -44,7 +44,7 @@ export function CartSummary({
         </div>
 
         <div className="flex items-center gap-2 p-2.5 rounded-lg bg-muted/60 text-xs text-muted-foreground">
-          <Truck className="h-4 w-4 text-primary shrink-0" />
+          <Truck className="h-4 w-4 text-primary shrink-0" aria-hidden="true" />
           <span>Fulfilled & delivered via Kalano Logistics</span>
         </div>
 
@@ -79,12 +79,15 @@ export function CartSummary({
             aria-label="Proceed to Checkout"
           >
             <span>Proceed to Checkout</span>
-            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         )}
 
         <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground text-center">
-          <ShieldCheck className="h-4 w-4 text-emerald-500" />
+          <ShieldCheck
+            className="h-4 w-4 text-emerald-500"
+            aria-hidden="true"
+          />
           <span>Safe & secure simulated checkout</span>
         </div>
       </div>

@@ -40,7 +40,10 @@ export function CartItemRow({
               className="h-full w-full object-contain"
             />
           ) : (
-            <Package className="h-8 w-8 text-muted-foreground/50" />
+            <Package
+              className="h-8 w-8 text-muted-foreground/50"
+              aria-hidden="true"
+            />
           )}
         </div>
 
@@ -105,7 +108,7 @@ export function CartItemRow({
             aria-label={`Decrease quantity of ${item.product_name}`}
             className="h-7 w-7 rounded"
           >
-            <Minus className="h-3 w-3" />
+            <Minus className="h-3 w-3" aria-hidden="true" />
           </Button>
           <span
             data-testid={`quantity-display-${item.id}`}
@@ -122,7 +125,7 @@ export function CartItemRow({
             aria-label={`Increase quantity of ${item.product_name}`}
             className="h-7 w-7 rounded"
           >
-            <Plus className="h-3 w-3" />
+            <Plus className="h-3 w-3" aria-hidden="true" />
           </Button>
         </div>
 
@@ -149,7 +152,7 @@ export function CartItemRow({
           aria-label={`Remove ${item.product_name} from cart`}
           className="text-muted-foreground hover:text-destructive transition-colors"
         >
-          <Trash2 className="h-4 w-4" />
+          <Trash2 className="h-4 w-4" aria-hidden="true" />
         </Button>
       </div>
     </div>

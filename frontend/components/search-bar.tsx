@@ -23,7 +23,9 @@ export function SearchBar({
     e.preventDefault();
     const trimmed = query.trim();
     if (trimmed) {
-      router.push(`/products?q=${encodeURIComponent(trimmed)}&limit=20&offset=0`);
+      router.push(
+        `/products?q=${encodeURIComponent(trimmed)}&limit=20&offset=0`
+      );
     } else {
       router.push("/products");
     }
@@ -49,11 +51,16 @@ export function SearchBar({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
-          className="h-10 w-full rounded-lg border border-border bg-background pl-10 pr-4 text-sm text-foreground shadow-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring"
-          aria-label="Search products, brands, or descriptions"
+          className="h-10 w-full rounded-lg border border-border bg-background pl-10 pr-4 text-sm text-foreground shadow-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          aria-label="Search products"
         />
       </div>
-      <Button type="submit" size="default" className="h-10 px-4">
+      <Button
+        type="submit"
+        size="default"
+        className="h-10 px-4 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        aria-label="Search"
+      >
         <Search className="mr-1.5 h-4 w-4" aria-hidden="true" />
         Search
       </Button>

@@ -12,7 +12,10 @@ export function CartEmptyState() {
       className="rounded-2xl border border-dashed border-border bg-card p-12 text-center max-w-xl mx-auto my-12"
     >
       <div className="rounded-full bg-muted/60 p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-        <ShoppingCart className="h-8 w-8 text-muted-foreground" />
+        <ShoppingCart
+          className="h-8 w-8 text-muted-foreground"
+          aria-hidden="true"
+        />
       </div>
 
       <h2 className="text-2xl font-bold tracking-tight text-foreground">
@@ -29,7 +32,7 @@ export function CartEmptyState() {
           className={cn(buttonVariants({ size: "lg" }), "gap-2")}
         >
           <span>Browse Products</span>
-          <ArrowRight className="h-4 w-4" />
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
       </div>
     </div>

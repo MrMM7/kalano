@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Store, Package } from "lucide-react";
 import { OrderItem } from "@/types/order";
@@ -16,19 +16,35 @@ export function OrderCard({ order }: OrderCardProps) {
   });
 
   return (
-    <div
+    <article
       data-testid={`order-card-${order.id}`}
+      aria-labelledby={`order-title-${order.id}`}
       className="rounded-2xl border border-border/80 bg-card p-6 shadow-sm hover:border-border transition-all space-y-4"
     >
       {/* Header: ID, Date, Status Badge */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/40 pb-4">
+      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border/40 pb-4">
         <div className="flex items-center gap-3">
-          <span className="font-bold text-foreground">Order #{order.id}</span>
-          <span className="text-xs text-muted-foreground">•</span>
-          <span className="text-sm text-muted-foreground">{formattedDate}</span>
+          <span
+            id={`order-title-${order.id}`}
+            className="font-bold text-foreground"
+          >
+            Order #{order.id}
+          </span>
+          <span className="text-xs text-muted-foreground" aria-hidden="true">
+            •
+          </span>
+          <time
+            dateTime={order.created_at}
+            className="text-sm text-muted-foreground"
+          >
+            {formattedDate}
+          </time>
         </div>
-        <OrderStatusBadge status={order.delivery_types} />
-      </div>
+        <OrderStatusBadge
+          status={order.delivery_types}
+          aria-label={`Order status: ${order.delivery_types}`}
+        />
+      </header>
 
       {/* Main Body */}
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
@@ -64,7 +80,7 @@ export function OrderCard({ order }: OrderCardProps) {
                 {order.product_brand}
               </span>
             )}
-            {order.product_brand && <span>•</span>}
+            {order.product_brand && <span aria-hidden="true">•</span>}
             <span className="flex items-center gap-1">
               <Store className="h-3 w-3" aria-hidden="true" />
               <span>Sold by: {order.seller_name}</span>
@@ -85,13 +101,13 @@ export function OrderCard({ order }: OrderCardProps) {
       </div>
 
       {/* Footer: Shipping destination */}
-      <div className="border-t border-border/40 pt-3 flex items-start sm:items-center gap-2 text-xs text-muted-foreground">
+      <footer className="border-t border-border/40 pt-3 flex items-start sm:items-center gap-2 text-xs text-muted-foreground">
         <MapPin
           className="h-3.5 w-3.5 shrink-0 text-muted-foreground mt-0.5 sm:mt-0"
           aria-hidden="true"
         />
         <span className="truncate">Shipping to: {order.address}</span>
-      </div>
-    </div>
+      </footer>
+    </article>
   );
 }

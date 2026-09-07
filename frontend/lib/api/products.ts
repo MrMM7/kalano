@@ -72,4 +72,3 @@ export async function getProductById(
 
   return res.json();
 }
-

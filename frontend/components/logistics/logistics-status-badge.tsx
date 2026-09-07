@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 export interface LogisticsStatusBadgeProps {
   status: string;
   className?: string;
+  "aria-label"?: string;
 }
 
 interface StatusConfig {
@@ -46,6 +47,7 @@ const STATUS_CONFIG: Record<string, StatusConfig> = {
 export function LogisticsStatusBadge({
   status,
   className,
+  "aria-label": ariaLabel,
 }: LogisticsStatusBadgeProps) {
   const normalized = (status || "").toLowerCase().trim();
   const config = STATUS_CONFIG[normalized] || {
@@ -60,6 +62,8 @@ export function LogisticsStatusBadge({
     <span
       data-testid="logistics-status-badge"
       data-status={normalized}
+      role="status"
+      aria-label={ariaLabel || `Delivery status: ${config.label}`}
       className={cn(
         "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border",
         config.className,

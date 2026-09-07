@@ -53,27 +53,32 @@ export default function DashboardPage() {
             className="p-8 rounded-2xl border border-destructive/30 bg-destructive/10 text-foreground space-y-4"
           >
             <div className="rounded-full bg-destructive/20 p-3 w-14 h-14 mx-auto flex items-center justify-center text-destructive">
-              <AlertCircle className="h-7 w-7" />
+              <AlertCircle className="h-7 w-7" aria-hidden="true" />
             </div>
             <h1 className="text-2xl font-bold tracking-tight">
               Access Restricted
             </h1>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              This area is reserved for merchant accounts. You are currently logged in
-              as a <strong className="capitalize">{user.user_role}</strong>. Please switch
-              to a merchant account to access inventory and sales tools.
+              This area is reserved for merchant accounts. You are currently
+              logged in as a{" "}
+              <strong className="capitalize">{user.user_role}</strong>. Please
+              switch to a merchant account to access inventory and sales tools.
             </p>
             <div className="pt-4 flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/"
-                className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+                className={cn(
+                  buttonVariants({ variant: "outline", size: "sm" })
+                )}
               >
                 Back to Home
               </Link>
               {user.user_role === "buyer" && (
                 <Link
                   href="/orders"
-                  className={cn(buttonVariants({ variant: "default", size: "sm" }))}
+                  className={cn(
+                    buttonVariants({ variant: "default", size: "sm" })
+                  )}
                 >
                   View Your Orders
                 </Link>
@@ -86,7 +91,7 @@ export default function DashboardPage() {
                     "gap-1.5"
                   )}
                 >
-                  <Truck className="h-4 w-4" />
+                  <Truck className="h-4 w-4" aria-hidden="true" />
                   <span>Logistics Hub</span>
                 </Link>
               )}

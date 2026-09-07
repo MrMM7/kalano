@@ -1,4 +1,3 @@
-import { TableSkeleton } from "@/components/ui/table-skeleton";
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -15,8 +14,9 @@ import { LogisticsMetrics } from "@/components/logistics/logistics-metrics";
 import { LogisticsFilterBar } from "@/components/logistics/logistics-filter-bar";
 import { LogisticsTable } from "@/components/logistics/logistics-table";
 import { LogisticsConfirmDialog } from "@/components/logistics/logistics-confirm-dialog";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
 import { buttonVariants, Button } from "@/components/ui/button";
-import { AlertCircle, RotateCw, ShieldAlert, ShoppingBag } from "lucide-react";
+import { AlertCircle, RotateCw, ShieldAlert } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -140,19 +140,6 @@ export default function LogisticsPage() {
   if (user.user_role !== "logistics") {
     return (
       <div className="bg-background text-foreground">
-        <header className="border-b border-border/40 bg-background/95 backdrop-blur">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <Link
-              href="/"
-              className="flex items-center gap-2 text-xl font-bold tracking-tight text-primary"
-              aria-label="Kalano Home"
-            >
-              <ShoppingBag className="h-6 w-6" aria-hidden="true" />
-              <span>Kalano</span>
-            </Link>
-          </div>
-        </header>
-
         <div className="max-w-2xl mx-auto px-4 py-16 text-center">
           <div
             role="alert"
@@ -160,7 +147,7 @@ export default function LogisticsPage() {
             className="p-8 rounded-2xl border border-destructive/30 bg-destructive/10 text-foreground space-y-4"
           >
             <div className="rounded-full bg-destructive/20 p-3 w-14 h-14 mx-auto flex items-center justify-center text-destructive">
-              <ShieldAlert className="h-7 w-7" />
+              <ShieldAlert className="h-7 w-7" aria-hidden="true" />
             </div>
             <h1 className="text-2xl font-bold tracking-tight">Access Denied</h1>
             <p className="text-sm text-muted-foreground leading-relaxed">
@@ -304,7 +291,10 @@ export default function LogisticsPage() {
             className="p-6 rounded-2xl border border-destructive/30 bg-destructive/10 text-card-foreground flex flex-col sm:flex-row items-center justify-between gap-4"
           >
             <div className="flex items-center gap-3">
-              <AlertCircle className="h-6 w-6 text-destructive flex-shrink-0" />
+              <AlertCircle
+                className="h-6 w-6 text-destructive flex-shrink-0"
+                aria-hidden="true"
+              />
               <div>
                 <p className="font-semibold text-destructive">
                   Failed to load logistics orders
@@ -322,7 +312,7 @@ export default function LogisticsPage() {
               onClick={() => refetch()}
               className="gap-1.5"
             >
-              <RotateCw className="h-4 w-4" />
+              <RotateCw className="h-4 w-4" aria-hidden="true" />
               <span>Retry</span>
             </Button>
           </div>

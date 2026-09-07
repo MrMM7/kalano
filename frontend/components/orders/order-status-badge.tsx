@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 interface OrderStatusBadgeProps {
   status: DeliveryStatus | string;
   className?: string;
+  "aria-label"?: string;
 }
 
 interface StatusConfig {
@@ -44,7 +45,11 @@ const STATUS_MAP: Record<string, StatusConfig> = {
   },
 };
 
-export function OrderStatusBadge({ status, className }: OrderStatusBadgeProps) {
+export function OrderStatusBadge({
+  status,
+  className,
+  "aria-label": ariaLabel,
+}: OrderStatusBadgeProps) {
   const config = STATUS_MAP[status] || {
     label: status.charAt(0).toUpperCase() + status.slice(1),
     className: "bg-muted text-muted-foreground border-border",
@@ -54,6 +59,8 @@ export function OrderStatusBadge({ status, className }: OrderStatusBadgeProps) {
     <span
       data-testid="order-status-badge"
       data-status={status}
+      role="status"
+      aria-label={ariaLabel || `Order status: ${config.label}`}
       className={cn(
         "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border transition-colors",
         config.className,

@@ -51,7 +51,10 @@ function EditOfferForm({ offer, onClose }: EditOfferFormProps) {
       return;
     }
 
-    if (parsedDelivery !== null && (isNaN(parsedDelivery) || parsedDelivery < 1)) {
+    if (
+      parsedDelivery !== null &&
+      (isNaN(parsedDelivery) || parsedDelivery < 1)
+    ) {
       setErrorMessage("Estimated delivery days must be at least 1 day.");
       return;
     }

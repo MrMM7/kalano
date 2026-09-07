@@ -62,9 +62,12 @@ export function LogisticsTable({
               aria-label={`Confirm pickup for order #${order.id}`}
             >
               {isRowUpdating ? (
-                <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />
+                <Loader2
+                  className="h-3.5 w-3.5 animate-spin mr-1.5"
+                  aria-hidden="true"
+                />
               ) : (
-                <Truck className="h-3.5 w-3.5 mr-1.5" />
+                <Truck className="h-3.5 w-3.5 mr-1.5" aria-hidden="true" />
               )}
               Confirm Pickup
             </Button>
@@ -76,7 +79,7 @@ export function LogisticsTable({
               onClick={() => onRequestCancel(order)}
               aria-label={`Cancel order #${order.id}`}
             >
-              <Ban className="h-3.5 w-3.5 mr-1.5" />
+              <Ban className="h-3.5 w-3.5 mr-1.5" aria-hidden="true" />
               Cancel
             </Button>
           </div>
@@ -93,9 +96,12 @@ export function LogisticsTable({
               aria-label={`Mark order #${order.id} shipped`}
             >
               {isRowUpdating ? (
-                <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />
+                <Loader2
+                  className="h-3.5 w-3.5 animate-spin mr-1.5"
+                  aria-hidden="true"
+                />
               ) : (
-                <Truck className="h-3.5 w-3.5 mr-1.5" />
+                <Truck className="h-3.5 w-3.5 mr-1.5" aria-hidden="true" />
               )}
               Mark Shipped
             </Button>
@@ -107,7 +113,7 @@ export function LogisticsTable({
               onClick={() => onRequestCancel(order)}
               aria-label={`Cancel order #${order.id}`}
             >
-              <Ban className="h-3.5 w-3.5 mr-1.5" />
+              <Ban className="h-3.5 w-3.5 mr-1.5" aria-hidden="true" />
               Cancel
             </Button>
           </div>
@@ -124,9 +130,15 @@ export function LogisticsTable({
               aria-label={`End delivery for order #${order.id}`}
             >
               {isRowUpdating ? (
-                <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />
+                <Loader2
+                  className="h-3.5 w-3.5 animate-spin mr-1.5"
+                  aria-hidden="true"
+                />
               ) : (
-                <CheckCircle className="h-3.5 w-3.5 mr-1.5" />
+                <CheckCircle
+                  className="h-3.5 w-3.5 mr-1.5"
+                  aria-hidden="true"
+                />
               )}
               End Delivery
             </Button>
@@ -138,7 +150,7 @@ export function LogisticsTable({
               onClick={() => onRequestCancel(order)}
               aria-label={`Cancel order #${order.id}`}
             >
-              <Ban className="h-3.5 w-3.5 mr-1.5" />
+              <Ban className="h-3.5 w-3.5 mr-1.5" aria-hidden="true" />
               Cancel
             </Button>
           </div>
@@ -155,9 +167,12 @@ export function LogisticsTable({
               aria-label={`Process return for order #${order.id}`}
             >
               {isRowUpdating ? (
-                <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />
+                <Loader2
+                  className="h-3.5 w-3.5 animate-spin mr-1.5"
+                  aria-hidden="true"
+                />
               ) : (
-                <RotateCcw className="h-3.5 w-3.5 mr-1.5" />
+                <RotateCcw className="h-3.5 w-3.5 mr-1.5" aria-hidden="true" />
               )}
               Process Return
             </Button>
@@ -225,6 +240,7 @@ export function LogisticsTable({
               </th>
               <th
                 scope="col"
+                aria-label="Actions"
                 className="px-6 py-3 font-medium text-right whitespace-nowrap"
               >
                 Actions
@@ -368,7 +384,10 @@ export function LogisticsTable({
 
                     {/* Status Badge */}
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <LogisticsStatusBadge status={order.delivery_types} />
+                      <LogisticsStatusBadge
+                        status={order.delivery_types}
+                        aria-label={`Delivery status: ${order.delivery_types}`}
+                      />
                     </td>
 
                     {/* Actions */}

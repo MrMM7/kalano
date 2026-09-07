@@ -66,7 +66,7 @@ export function LogisticsHeader({ user }: LogisticsHeaderProps) {
             className="gap-1.5 text-muted-foreground hover:text-foreground"
             aria-label="Sign out"
           >
-            <LogOut className="h-4 w-4" />
+            <LogOut className="h-4 w-4" aria-hidden="true" />
             <span className="hidden sm:inline">Sign Out</span>
           </Button>
         </div>

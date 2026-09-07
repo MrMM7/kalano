@@ -68,8 +68,7 @@ export function useUpdateOffer() {
     Error,
     { offerId: string; payload: UpdateOfferPayload }
   >({
-    mutationFn: ({ offerId, payload }) =>
-      updateMerchantOffer(offerId, payload),
+    mutationFn: ({ offerId, payload }) => updateMerchantOffer(offerId, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["merchant-offers"] });
     },
@@ -103,15 +102,13 @@ export function useMerchantOrders(statusFilter?: string) {
 export function useUpdateOrderStatus() {
   const queryClient = useQueryClient();
 
-  return useMutation<
-    MerchantOrder,
-    Error,
-    { orderId: number; status: string }
-  >({
-    mutationFn: ({ orderId, status }) =>
-      updateMerchantOrderStatus(orderId, status),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["merchant-orders"] });
-    },
-  });
+  return useMutation<MerchantOrder, Error, { orderId: number; status: string }>(
+    {
+      mutationFn: ({ orderId, status }) =>
+        updateMerchantOrderStatus(orderId, status),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["merchant-orders"] });
+      },
+    }
+  );
 }

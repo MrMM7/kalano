@@ -25,7 +25,7 @@ export function OrdersEmptyState() {
           className={cn(buttonVariants({ size: "lg" }), "gap-2")}
         >
           <span>Explore Products</span>
-          <ArrowRight className="h-4 w-4" />
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
       </div>
     </div>

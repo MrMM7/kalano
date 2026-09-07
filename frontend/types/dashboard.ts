@@ -54,12 +54,7 @@ export interface MerchantProductCreateResponse {
 }
 
 export type MerchantOrderStatus =
-  | "pending"
-  | "confirmed"
-  | "shipped"
-  | "delivered"
-  | "cancelled"
-  | "returned";
+  "pending" | "confirmed" | "shipped" | "delivered" | "cancelled" | "returned";
 
 export interface MerchantOrder {
   id: number;
