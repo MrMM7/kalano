@@ -252,6 +252,7 @@ The project includes specialized agent skills (under `.agents/skills/`) to autom
 - **`/spec-planner`**: Analyzes the roadmap, asks clarifying questions via interactive modals, creates a feature branch (`feat/phase-name`), and scaffolds numbered spec folders (`specs/001-feature-name/`) with `spec.md`, `plan.md`, and `tasks.md`.
 - **`/spec-executor`**: Discovers the next incomplete spec folder, executes tasks in strict batch dependency order, leverages subagents for parallel execution, and enforces verification and atomic commits after every task.
 - **`/spec-finisher`**: Runs full frontend and backend test suites, halts immediately on any test failure, cleans up completed spec folders upon 100% test success, and merges the feature branch into `main` with Conventional Commits.
+- **`/compact-roadmap`**: Splits and archives completed roadmap phases into separate versioned files under `.specify/memory/roadmaps/<version>/` (leveraging parallel subagents for fast generation) and replaces the main roadmap with a compact summary of past versions while preserving future phases inline.
 
 ---
 
