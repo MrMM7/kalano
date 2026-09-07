@@ -42,6 +42,16 @@ describe("SellerOffersTable", () => {
       />
     );
 
+    expect(
+      screen.getByRole("table", { name: "Seller offers comparison table" })
+    ).toBeInTheDocument();
+
+    const headers = screen.getAllByRole("columnheader");
+    expect(headers).toHaveLength(5);
+    headers.forEach((th) => {
+      expect(th).toHaveAttribute("scope", "col");
+    });
+
     expect(screen.getByText("Apex Electronics")).toBeInTheDocument();
     expect(screen.getByText("$199.99")).toBeInTheDocument();
     expect(screen.getByText("2 days")).toBeInTheDocument();
@@ -71,6 +81,10 @@ describe("SellerOffersTable", () => {
 
     // Offer 2 is Select Offer (enabled)
     expect(selectButtons[1]).toHaveTextContent("Select Offer");
+    expect(selectButtons[1]).toHaveAttribute(
+      "aria-label",
+      "Select offer from Prime Superstore for $219.00"
+    );
     expect(selectButtons[1]).not.toBeDisabled();
     fireEvent.click(selectButtons[1]);
     expect(onSelectMock).toHaveBeenCalledWith("offer-2");

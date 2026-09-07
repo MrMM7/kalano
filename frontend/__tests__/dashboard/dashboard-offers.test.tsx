@@ -193,13 +193,9 @@ describe("Dashboard Offers Tab and Components", () => {
     );
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();
-    expect(
-      screen.getByLabelText(/Price \(\$\)/i)
-    ).toHaveValue(129.99);
+    expect(screen.getByLabelText(/Price \(\$\)/i)).toHaveValue(129.99);
     expect(screen.getByLabelText(/Available Stock/i)).toHaveValue(12);
-    expect(
-      screen.getByLabelText(/Estimated Delivery Days/i)
-    ).toHaveValue(3);
+    expect(screen.getByLabelText(/Estimated Delivery Days/i)).toHaveValue(3);
 
     // Update price and submit
     fireEvent.change(screen.getByLabelText(/Price \(\$\)/i), {
@@ -264,9 +260,7 @@ describe("Dashboard Offers Tab and Components", () => {
     });
 
     renderWithClient(<DashboardPage />);
-    expect(
-      screen.getByTestId("access-restricted-banner")
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("access-restricted-banner")).toBeInTheDocument();
     expect(screen.getByText("Access Restricted")).toBeInTheDocument();
     expect(
       screen.getByText(/This area is reserved for merchant accounts/i)

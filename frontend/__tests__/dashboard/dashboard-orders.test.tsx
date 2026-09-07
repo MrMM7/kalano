@@ -218,17 +218,16 @@ describe("IncomingOrdersTab", () => {
   });
 
   it("allows switching filter pills", () => {
-    const useMerchantOrdersSpy = vi.spyOn(
-      useDashboardModule,
-      "useMerchantOrders"
-    ).mockReturnValue({
-      orders: mockOrdersList,
-      totalOrders: 3,
-      isLoading: false,
-      isError: false,
-      error: null,
-      refetch: vi.fn(),
-    } as unknown as ReturnType<typeof useDashboardModule.useMerchantOrders>);
+    const useMerchantOrdersSpy = vi
+      .spyOn(useDashboardModule, "useMerchantOrders")
+      .mockReturnValue({
+        orders: mockOrdersList,
+        totalOrders: 3,
+        isLoading: false,
+        isError: false,
+        error: null,
+        refetch: vi.fn(),
+      } as unknown as ReturnType<typeof useDashboardModule.useMerchantOrders>);
 
     renderWithClient(<IncomingOrdersTab />);
 

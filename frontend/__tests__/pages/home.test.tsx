@@ -120,9 +120,7 @@ describe("Home Page (Storefront)", () => {
 
     render(<Home />);
 
-    expect(
-      screen.getByText("No products available yet")
-    ).toBeInTheDocument();
+    expect(screen.getByText("No products available yet")).toBeInTheDocument();
   });
 
   it("renders product cards when data is successfully loaded", () => {

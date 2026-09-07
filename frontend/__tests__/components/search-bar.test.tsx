@@ -24,7 +24,7 @@ describe("SearchBar", () => {
     pushMock.mockClear();
     render(<SearchBar />);
 
-    const input = screen.getByLabelText("Search products, brands, or descriptions");
+    const input = screen.getByLabelText("Search products");
     fireEvent.change(input, { target: { value: "mechanical keyboard" } });
     fireEvent.submit(screen.getByRole("search"));
 
@@ -37,7 +37,7 @@ describe("SearchBar", () => {
     pushMock.mockClear();
     render(<SearchBar />);
 
-    const input = screen.getByLabelText("Search products, brands, or descriptions");
+    const input = screen.getByLabelText("Search products");
     fireEvent.change(input, { target: { value: "   " } });
     fireEvent.submit(screen.getByRole("search"));
 

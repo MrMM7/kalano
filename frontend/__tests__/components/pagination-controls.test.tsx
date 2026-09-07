@@ -20,7 +20,9 @@ describe("PaginationControls", () => {
     expect(screen.getByText(/showing/i)).toBeInTheDocument();
     expect(screen.getByText("50")).toBeInTheDocument();
 
-    const previousButtons = screen.getAllByRole("button", { name: /previous/i });
+    const previousButtons = screen.getAllByRole("button", {
+      name: /previous/i,
+    });
     previousButtons.forEach((btn) => expect(btn).toBeDisabled());
 
     const nextButtons = screen.getAllByRole("button", { name: /next/i });
@@ -43,7 +45,9 @@ describe("PaginationControls", () => {
 
     expect(screen.getByText("Page 2 of 3")).toBeInTheDocument();
 
-    const previousButtons = screen.getAllByRole("button", { name: /previous/i });
+    const previousButtons = screen.getAllByRole("button", {
+      name: /previous/i,
+    });
     const nextButtons = screen.getAllByRole("button", { name: /next/i });
 
     expect(previousButtons[1]).not.toBeDisabled();

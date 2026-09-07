@@ -40,12 +40,20 @@ describe("ProductCard", () => {
     expect(screen.getByText("$149.99")).toBeInTheDocument();
     expect(screen.getByText("From")).toBeInTheDocument();
 
+    expect(screen.getByRole("article")).toBeInTheDocument();
+
     const image = screen.getByRole("img", {
-      name: "Wireless Noise-Cancelling Headphones",
+      name: "Photo of Wireless Noise-Cancelling Headphones",
     });
     expect(image).toHaveAttribute("src", "https://example.com/headphones.jpg");
+    expect(image).toHaveAttribute(
+      "alt",
+      "Photo of Wireless Noise-Cancelling Headphones"
+    );
 
-    const link = screen.getByRole("link");
+    const link = screen.getByRole("link", {
+      name: "View details for Wireless Noise-Cancelling Headphones by SoundWave",
+    });
     expect(link).toHaveAttribute(
       "href",
       "/products/3fa85f64-5717-4562-b3fc-2c963f66afa6"
