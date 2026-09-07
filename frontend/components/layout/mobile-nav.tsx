@@ -124,10 +124,12 @@ export function MobileNav({ className }: MobileNavProps = {}) {
 
       {/* Slide-out Drawer Overlay & Container */}
       {isOpen && (
-        <div
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm animate-in fade-in-0 duration-200"
-          aria-hidden="true"
-        >
+        <div className="fixed inset-0 z-50">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm animate-in fade-in-0 duration-200"
+            aria-hidden="true"
+          />
           <div
             ref={drawerRef}
             id="mobile-navigation-drawer"
@@ -179,7 +181,10 @@ export function MobileNav({ className }: MobileNavProps = {}) {
                   onClick={handleLinkClick}
                   className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
-                  <ShoppingBag className="size-4 text-muted-foreground" aria-hidden="true" />
+                  <ShoppingBag
+                    className="size-4 text-muted-foreground"
+                    aria-hidden="true"
+                  />
                   <span>Home</span>
                 </Link>
                 <Link
@@ -187,7 +192,10 @@ export function MobileNav({ className }: MobileNavProps = {}) {
                   onClick={handleLinkClick}
                   className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
-                  <Package className="size-4 text-muted-foreground" aria-hidden="true" />
+                  <Package
+                    className="size-4 text-muted-foreground"
+                    aria-hidden="true"
+                  />
                   <span>Catalog</span>
                 </Link>
               </div>
@@ -215,7 +223,10 @@ export function MobileNav({ className }: MobileNavProps = {}) {
                       onClick={handleLinkClick}
                       className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                     >
-                      <LayoutDashboard className="size-4 text-muted-foreground" aria-hidden="true" />
+                      <LayoutDashboard
+                        className="size-4 text-muted-foreground"
+                        aria-hidden="true"
+                      />
                       <span>Seller Dashboard</span>
                     </Link>
                   )}
@@ -226,7 +237,10 @@ export function MobileNav({ className }: MobileNavProps = {}) {
                       onClick={handleLinkClick}
                       className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                     >
-                      <Truck className="size-4 text-muted-foreground" aria-hidden="true" />
+                      <Truck
+                        className="size-4 text-muted-foreground"
+                        aria-hidden="true"
+                      />
                       <span>Logistics Dashboard</span>
                     </Link>
                   )}
@@ -238,7 +252,10 @@ export function MobileNav({ className }: MobileNavProps = {}) {
                         onClick={handleLinkClick}
                         className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                       >
-                        <Package className="size-4 text-muted-foreground" aria-hidden="true" />
+                        <Package
+                          className="size-4 text-muted-foreground"
+                          aria-hidden="true"
+                        />
                         <span>My Orders</span>
                       </Link>
                       <Link
@@ -246,7 +263,10 @@ export function MobileNav({ className }: MobileNavProps = {}) {
                         onClick={handleLinkClick}
                         className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                       >
-                        <ShoppingCart className="size-4 text-muted-foreground" aria-hidden="true" />
+                        <ShoppingCart
+                          className="size-4 text-muted-foreground"
+                          aria-hidden="true"
+                        />
                         <span>My Cart</span>
                       </Link>
                     </>
